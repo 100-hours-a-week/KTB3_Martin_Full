@@ -11,12 +11,55 @@ class  Ingredient{
     //재료 1개당 칼로리(베이컨은 2줄 기준)
     int kcal;
 
-     Ingredient(String name, int num, int kcal){
+
+    public Ingredient(String name, int num, int kcal){
         this.name = name;
         this.num = num;
         this.kcal = kcal;
     }
 }
+
+class Patty extends Ingredient {
+    String material;
+    public Patty(String name, int num, int kcal , String material) {
+        super(name, num, kcal);
+        this.material = material;
+    }
+
+
+}
+
+class Raw_Patty extends Patty {
+
+    public Raw_Patty() {
+        super("패티" ,1 , 250, "Beef");
+    }
+}
+
+class Bulgogi_Patty extends Patty {
+
+    int sauce;
+    public Bulgogi_Patty() {
+        super("불고기패티" , 1, 280, "Beef");
+        this.sauce = 30;
+    }
+
+    public int showrawpattykcal(){
+        return kcal -  sauce;
+    }
+}
+
+class ChickenPatty extends Patty{
+    public boolean isfried;
+    public ChickenPatty(boolean fried) {
+        super("치킨패티" ,1 , 300 , "Chicken");
+        this.isfried = fried;
+    }
+}
+
+
+
+
 abstract class Hamburger{
     //재료들을 모아놓은 리스트
     ArrayList<Ingredient> ingarr;
@@ -159,7 +202,7 @@ class Cheese extends Hamburger{
                 break;
             }
         }
-        ingarr.add(new  Ingredient("패티",1,250));
+        ingarr.add(new Raw_Patty());
 
         StringBuilder sb = new StringBuilder();
         sb.append("치즈버거 기본 재료 :\n");
@@ -183,11 +226,11 @@ class Cheese extends Hamburger{
 
 
 
-class Beef extends Hamburger{
+class Bulgogi extends Hamburger{
 
-    Beef(){
+    Bulgogi(){
         name = "불고기버거";
-        ingarr.add(new  Ingredient("패티",1,280));
+        ingarr.add(new Bulgogi_Patty());
 
         StringBuilder sb = new StringBuilder();
         sb.append("불고기버거 기본 재료 :\n");
@@ -197,10 +240,12 @@ class Beef extends Hamburger{
     }
 
     boolean add(String name, int num){
+        if(name.equals("패티")) name = "불고기패티";
         return super.hamadd(name,num);
     }
 
     boolean sub(String name, int num){
+        if(name.equals("패티")) name = "불고기패티";
         return super.hamsub(name,num);
     }
 }
@@ -208,7 +253,7 @@ class Beef extends Hamburger{
 class Chicken extends Hamburger{
     Chicken(){
         name = "치킨버거";
-        ingarr.add(new  Ingredient("치킨패티",1,280));
+        ingarr.add(new ChickenPatty((true)));
 
         StringBuilder sb = new StringBuilder();
         sb.append("치킨버거 기본 재료 :\n");
@@ -278,7 +323,7 @@ public class Main {
                 }
 
                 if(choice == 1) hamburger = new Cheese();
-                else if(choice == 2) hamburger = new Beef();
+                else if(choice == 2) hamburger = new Bulgogi();
                 else hamburger = new Chicken();
 
 
@@ -421,24 +466,6 @@ public class Main {
 
             System.out.println("프로그램 종료");
             return ;
-
-
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
     }
 }
