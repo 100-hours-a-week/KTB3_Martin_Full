@@ -43,15 +43,15 @@ class Bulgogi_Patty extends Patty {
         super("불고기패티" , 1, 280, "Beef");
         this.sauce = 30;
     }
-
+    
     public int showrawpattykcal(){
         return kcal -  sauce;
     }
 }
 
-class ChickenPatty extends Patty{
+class Chicken_Patty extends Patty{
     public boolean isfried;
-    public ChickenPatty(boolean fried) {
+    public Chicken_Patty(boolean fried) {
         super("치킨패티" ,1 , 300 , "Chicken");
         this.isfried = fried;
     }
@@ -253,7 +253,7 @@ class Bulgogi extends Hamburger{
 class Chicken extends Hamburger{
     Chicken(){
         name = "치킨버거";
-        ingarr.add(new ChickenPatty((true)));
+        ingarr.add(new Chicken_Patty((true)));
 
         StringBuilder sb = new StringBuilder();
         sb.append("치킨버거 기본 재료 :\n");
