@@ -1,4 +1,4 @@
-package Ingredient;
+package Dto.Ingredient;
 
 public class Chicken_Patty extends Patty {
     public boolean isfried;

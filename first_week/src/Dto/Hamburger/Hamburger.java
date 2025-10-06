@@ -1,12 +1,12 @@
-package Hamburger;
+package Dto.Hamburger;
 
-import Ingredient.Ingredient;
+import Dto.Ingredient.Ingredient;
 
 import java.util.ArrayList;
 
 public abstract class Hamburger {
     //재료들을 모아놓은 리스트
-    protected ArrayList<Ingredient> ingarr;
+    protected ArrayList<Ingredient> IngredientList;
     //버거종류
     protected String name;
 
@@ -23,14 +23,14 @@ public abstract class Hamburger {
         else if (name.equals("소스")) name = "소스(마요네즈)";
         boolean result = false;
 
-        for (Ingredient i : ingarr) {
-            if (i.name.equals(name)) {
-                i.num += num;
+        for (Ingredient i : IngredientList) {
+            if (i.getName().equals(name)) {
+                i.setNum(i.getNum()+1);
                 result = true;
                 StringBuilder sb = new StringBuilder();
-                sb.append("갯수를 추가한 재료: ").append(i.name).append("\n");
-                sb.append("총 갯수: ").append(i.num).append("개");
-                sb.append("(").append(i.kcal * i.num).append("kcal)\n");
+                sb.append("갯수를 추가한 재료: ").append(i.getName()).append("\n");
+                sb.append("총 갯수: ").append(i.getNum()).append("개");
+                sb.append("(").append(i.getKcal()* i.getNum()).append("kcal)\n");
                 System.out.println(sb.toString());
 
 
@@ -49,17 +49,17 @@ public abstract class Hamburger {
         else if (name.equals("소스")) name = "소스(마요네즈)";
         boolean result = false;
 
-        for (Ingredient i : ingarr) {
-            if (i.name.equals(name)) {
-                if (i.num < num) {
+        for (Ingredient i : IngredientList) {
+            if (i.getName().equals(name)) {
+                if (i.getNum() < num) {
                     System.out.println("뺄려는 갯수가 이미 있는 갯수보다 큽니다.");
                 } else {
-                    i.num -= num;
+                    i.setNum(i.getKcal()-1);
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append("갯수를 뺀 재료: ").append(i.name).append("\n");
-                    sb.append("총 갯수: ").append(i.num).append("개");
-                    sb.append("(").append(i.kcal * i.num).append("kcal)\n");
+                    sb.append("갯수를 뺀 재료: ").append(i.getName()).append("\n");
+                    sb.append("총 갯수: ").append(i.getNum()).append("개");
+                    sb.append("(").append(i.getKcal() * i.getNum()).append("kcal)\n");
                     result = true;
                     System.out.println(sb.toString());
 
@@ -79,12 +79,12 @@ public abstract class Hamburger {
         int totalkcal = 0;
 //        StringBuilder sb = new StringBuilder();
 //        sb.append("종류 : ").append(this.name).append("\n");
-        for (Ingredient i : ingarr) {
+        for (Ingredient i : IngredientList) {
 
-            if (i.num == 0) continue;
+            if (i.getNum() == 0) continue;
 //            sb.append(i.name).append(" ").append(i.num).append("개 ");
 //            sb.append("(").append(i.kcal * i.num).append("kcal)\n");
-            totalkcal += i.kcal * i.num;
+            totalkcal += i.getKcal() * i.getNum();
 
         }
 
@@ -94,10 +94,10 @@ public abstract class Hamburger {
     //현재 재료들 보여주기
     public String ShowIngredient() {
         StringBuilder sb = new StringBuilder();
-        for (Ingredient i : ingarr) {
-            if (i.num == 0) continue;
-            sb.append(i.name).append(" ").append(i.num).append("개 ");
-            sb.append("(").append(i.kcal * i.num).append("kcal)\n");
+        for (Ingredient i : IngredientList) {
+            if (i.getNum() == 0) continue;
+            sb.append(i.getName()).append(" ").append(i.getNum()).append("개 ");
+            sb.append("(").append(i.getKcal() * i.getNum()).append("kcal)\n");
 
         }
         return sb.toString();
@@ -105,14 +105,14 @@ public abstract class Hamburger {
     }
 
     protected Hamburger() {
-        ingarr = new ArrayList<>();
-        ingarr.add(new Ingredient("빵", 2, 90));
-        ingarr.add(new Ingredient("양상추", 1, 4));
-        ingarr.add(new Ingredient("토마토", 1, 6));
-        ingarr.add(new Ingredient("양파", 1, 7));
-        ingarr.add(new Ingredient("소스(마요네즈)", 1, 100));
-        ingarr.add(new Ingredient("베이컨(2장)", 0, 90));
-        ingarr.add(new Ingredient("치즈", 0, 50));
+        IngredientList = new ArrayList<>();
+        IngredientList.add(new Ingredient("빵", 2, 90));
+        IngredientList.add(new Ingredient("양상추", 1, 4));
+        IngredientList.add(new Ingredient("토마토", 1, 6));
+        IngredientList.add(new Ingredient("양파", 1, 7));
+        IngredientList.add(new Ingredient("소스(마요네즈)", 1, 100));
+        IngredientList.add(new Ingredient("베이컨(2장)", 0, 90));
+        IngredientList.add(new Ingredient("치즈", 0, 50));
 
     }
 

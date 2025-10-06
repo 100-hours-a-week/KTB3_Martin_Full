@@ -1,4 +1,4 @@
-package Ingredient;
+package Dto.Ingredient;
 
 public class Raw_Patty extends Patty {
 

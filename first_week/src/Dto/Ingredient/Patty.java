@@ -1,4 +1,4 @@
-package Ingredient;
+package Dto.Ingredient;
 
 class Patty extends Ingredient {
     String material;
