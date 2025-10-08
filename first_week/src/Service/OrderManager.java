@@ -29,6 +29,9 @@ public class OrderManager {
     public void start(){
         System.out.println("햄버거 계산기 시작");
     }
+    public void end(){
+        System.out.println("프로그램 종료");
+    }
 
 
 
@@ -98,6 +101,7 @@ public class OrderManager {
         return hamburger;
     }
 
+    //재료 빼기 입출력
     public Hamburger subIngredient(Hamburger hamburger) throws IOException {
         StringBuilder sb = new StringBuilder();
         showNowIngredient(hamburger);
@@ -122,7 +126,25 @@ public class OrderManager {
         return hamburger;
 
     }
+    //버거 완성
+    public void saveHamburger(Hamburger hamburger) throws IOException {
+        System.out.println("커스텀 버거 완성");
+        hamburgerService.saveHamburger(hamburger);
+    }
 
+    //총 칼로리 계산
+    public void calculateKcal(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("총 칼로리 계산 시작").append("\n");
+        System.out.println(sb.toString());
+        sb = new StringBuilder();
+        sb.append("총 칼로리 : ").append(hamburgerService.getTotalKcal()).append("\n");
+        System.out.println(sb.toString());
+    }
+
+
+
+    //재료들 보여주기
     public String showIngredientForAdd(){
         StringBuilder sb = new StringBuilder();
         for (String s : hamburgerService.getAddableIngredient().keySet()) {
@@ -163,6 +185,11 @@ public class OrderManager {
     public boolean issub() throws IOException {
         System.out.println("빼실 재료 있으신가요>(y/n)");
         return isYesorNo();
+    }
+    public boolean isContinue() throws IOException {
+        System.out.println("버거 종류를 추가 하실 건가요?");
+        return isYesorNo();
+
     }
 
     //입력 유효성 검사

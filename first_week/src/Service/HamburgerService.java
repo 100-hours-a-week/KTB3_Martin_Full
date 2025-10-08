@@ -61,11 +61,13 @@ public class HamburgerService {
      return ingredientService.subIngredient(hamburger, name, num);
     }
 
+
+
     public Hamburger saveHamburger(Hamburger hamburger) {
         return hamburgerRepository.save(hamburger);
     }
 
-    public int getkcal(Hamburger hamburger) {
+    public int getKcal(Hamburger hamburger) {
         HashMap <String, Ingredients> IngredientList = hamburger.getIngredientList();
         Patty patty = hamburger.getPatty();
 
@@ -78,8 +80,8 @@ public class HamburgerService {
         return kcal;
     }
 
-    public int gettotalKcal() {
-        AtomicInteger kcal = new AtomicInteger();
+    public int getTotalKcal() {
+        AtomicInteger totalkcal = new AtomicInteger();
 
         ExecutorService es = Executors.newFixedThreadPool(4);
 
@@ -87,8 +89,8 @@ public class HamburgerService {
 
         for(Hamburger h : burgers){
             es.execute(() -> {
-                int eachkcal = getkcal(h);
-                kcal.addAndGet(eachkcal);
+                int kcal = getKcal(h);
+                totalkcal.addAndGet(kcal);
             });
         }
 
@@ -100,7 +102,7 @@ public class HamburgerService {
             e.printStackTrace();
         }
 
-        return kcal.get();
+        return totalkcal.get();
 
 
 

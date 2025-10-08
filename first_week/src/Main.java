@@ -40,6 +40,20 @@ public class Main {
                 answer = orderManager.issub();
             }
 
+            orderManager.saveHamburger(hamburger);
+
+            answer = orderManager.isContinue();
+            if(answer) continue;
+
+            orderManager.calculateKcal();
+            orderManager.end();
+
+            break;
+
+
+
+
+
 
 
         }
