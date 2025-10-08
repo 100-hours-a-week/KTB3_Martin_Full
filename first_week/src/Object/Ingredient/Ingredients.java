@@ -10,17 +10,17 @@ public enum Ingredients {
     BACON("베이컨",90),
     KETCHUP("케첩", 70);
 
-    private final String displayName;
+    private final String name;
     private final int kcal;
     private int num = 1;
 
     Ingredients(String displayName, int kcal) {
-        this.displayName = displayName;
+        this.name = displayName;
         this.kcal = kcal;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getName() {
+        return name;
     }
     public int getKcal() {
         return kcal;

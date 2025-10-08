@@ -12,7 +12,7 @@ public class IngredientService {
     public IngredientService() {
         AddableIngredient = new HashMap<>();
         for (Ingredients i : Ingredients.values()) {
-            AddableIngredient.put(i.getDisplayName(), i);
+            AddableIngredient.put(i.getName(), i);
         }
     }
 

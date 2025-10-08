@@ -17,11 +17,11 @@ public class Bulgogi extends Hamburger {
 
         Ingredients bun = BUN;
         bun.setNum(2);
-        IngredientList.put(bun.getDisplayName(), bun);
-        IngredientList.put(LETTUCE.getDisplayName(), LETTUCE);
-        IngredientList.put(TOMATO.getDisplayName(), TOMATO);
-        IngredientList.put(ONION.getDisplayName(), ONION);
-        IngredientList.put(MAYO.getDisplayName(), MAYO);
+        IngredientList.put(bun.getName(), bun);
+        IngredientList.put(LETTUCE.getName(), LETTUCE);
+        IngredientList.put(TOMATO.getName(), TOMATO);
+        IngredientList.put(ONION.getName(), ONION);
+        IngredientList.put(MAYO.getName(), MAYO);
 
 
 
@@ -29,13 +29,5 @@ public class Bulgogi extends Hamburger {
     }
 
 
-//    public boolean add(String name, int num) {
-//        if (name.equals("패티")) name = "불고기패티";
-//        return super.addIngredient(name, num);
-//    }
-//
-//    public boolean sub(String name, int num) {
-//        if (name.equals("패티")) name = "불고기패티";
-//        return super.subIngredient(name, num);
-//    }
+
 }

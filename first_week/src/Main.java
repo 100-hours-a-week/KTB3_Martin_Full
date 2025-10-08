@@ -25,19 +25,19 @@ public class Main {
             orderManager.showNowIngredient(hamburger);
 
             //재료추가 지점
-            boolean answer = orderManager.isadd();
+            boolean answer = orderManager.isAdd();
             while (answer) {
                 hamburger = orderManager.addIngredient(hamburger);
                 orderManager.showNowIngredient(hamburger);
-                answer = orderManager.isadd();
+                answer = orderManager.isAdd();
             }
 
             //재료빼기 지점
-            answer = orderManager.issub();
+            answer = orderManager.isSub();
             while (answer) {
                 hamburger = orderManager.subIngredient(hamburger);
                 orderManager.showNowIngredient(hamburger);
-                answer = orderManager.issub();
+                answer = orderManager.isSub();
             }
 
             orderManager.saveHamburger(hamburger);

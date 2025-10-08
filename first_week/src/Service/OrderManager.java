@@ -61,6 +61,8 @@ public class OrderManager {
         }
         sb = new StringBuilder();
         sb.append("선택한 햄버거: ").append(hamburger.getName());
+        sb.append("패티 : ").append(hamburger.getPatty().getName());
+        sb.append(" ").append(hamburger.getPatty().getKcal()).append("kcal");
         System.out.println(sb.toString());
         return hamburger;
     }
@@ -80,7 +82,7 @@ public class OrderManager {
     public Hamburger addIngredient(Hamburger hamburger) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("추가 가능한 재료 : ").append(showIngredientForAdd()).append("\n");
-        sb.append("추가할 재료를 선택해주세요");
+        sb.append("추가할 재료를 선택해주세요(패티는 추가 되지 않습니다)");
 
         String name;
         int num;
@@ -110,7 +112,7 @@ public class OrderManager {
         int num;
 
         while(true){
-            System.out.println("뺄 재료를 선택해주세요");
+            System.out.println("뺄 재료를 선택해주세요(패티는 뺄 수 없습니다.)");
             name = br.readLine();
             System.out.println("얼마나 빼실건가요?");
             num = checkIntAndPositive();
@@ -157,9 +159,13 @@ public class OrderManager {
     public void showNowIngredient(Hamburger hamburger){
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append("현재 햄버거의 재료: ").append("\n");
+
+        sb.append(hamburger.getPatty().getName());
+        sb.append(" ").append(hamburger.getPatty().getKcal()).append("kcal").append("\n");
+
         HashMap<String, Ingredients> tmp = hamburger.getIngredientList();
         for (Ingredients i : tmp.values()) {
-            sb.append(i.getDisplayName()).append(" ").append(i.getNum());
+            sb.append(i.getName()).append(" ").append(i.getNum());
             sb.append(" ").append(i.getNum()*i.getKcal()).append("Kcal").append("\n");
         }
         System.out.println(sb.toString());
@@ -177,17 +183,17 @@ public class OrderManager {
 
 
     //사용자 선택 질문 출력
-    public boolean isadd() throws IOException {
+    public boolean isAdd() throws IOException {
         System.out.println("추가하실 재료 있으신가요?(y/n)");
         return isYesorNo();
     }
 
-    public boolean issub() throws IOException {
+    public boolean isSub() throws IOException {
         System.out.println("빼실 재료 있으신가요>(y/n)");
         return isYesorNo();
     }
     public boolean isContinue() throws IOException {
-        System.out.println("버거 종류를 추가 하실 건가요?");
+        System.out.println("버거 종류를 추가 하실 건가요?(y/n)");
         return isYesorNo();
 
     }

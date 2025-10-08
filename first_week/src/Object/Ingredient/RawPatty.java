@@ -4,6 +4,6 @@ public class RawPatty extends Patty {
 
     public RawPatty() {
 
-        super("패티",  250, "Beef");
+        super("일반패티",  250, "Beef");
     }
 }
