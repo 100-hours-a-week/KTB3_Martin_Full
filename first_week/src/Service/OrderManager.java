@@ -147,6 +147,8 @@ public class OrderManager {
 
 
     //재료들 보여주기
+
+    //추가가능 재료 보여주기
     public String showIngredientForAdd(){
         StringBuilder sb = new StringBuilder();
         for (String s : hamburgerService.getAddableIngredient().keySet()) {
@@ -156,6 +158,7 @@ public class OrderManager {
         return sb.toString();
     }
 
+    //현재 햄버거 재료 보여주기
     public void showNowIngredient(Hamburger hamburger){
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append("현재 햄버거의 재료: ").append("\n");
