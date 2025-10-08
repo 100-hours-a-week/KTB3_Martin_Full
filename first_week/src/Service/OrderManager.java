@@ -6,11 +6,13 @@ import Object.Hamburger.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 
 ;
 
-//입력값 유효성 검사
+//입출력 레이어
 public class OrderManager {
 
     private final HamburgerService hamburgerService;
@@ -22,9 +24,30 @@ public class OrderManager {
         this.br = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    public void start(){
+        System.out.println("햄버거 계산기 시작");
+    }
 
-    //햄버거 선택
+
+
+    //햄버거 종류 선택
     public Hamburger getHamburger() throws IOException {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("무슨 종류로 드실건가요?\n");
+        sb.append("종류: ");
+
+        List<SetofHamburger> menu= Arrays.asList(SetofHamburger.values());
+        for(SetofHamburger burger:menu){
+            sb.append(burger).append(" ");
+        }
+        sb.append("\n");
+        sb.append("문자로 입력해주세요");
+        System.out.println(sb.toString());
+        sb = new StringBuilder();
+
+
+
         String request;
         Hamburger hamburger;
         while (true) {
@@ -38,8 +61,39 @@ public class OrderManager {
             }
             break;
         }
+        sb.append("선택한 햄버거: ").append(hamburger.getName());
+        System.out.println(sb.toString());
         return hamburger;
     }
+
+
+
+    public Hamburger addingredient(Hamburger hamburger){
+        return hamburger;
+    }
+
+    //재료 추가 입출력
+
+
+
+
+
+
+
+
+
+    //사용자 선택 질문 출력
+    public boolean isadd() throws IOException {
+        System.out.println("추가하실 재료 있으신가요?(y/n)");
+        return isYesorNo();
+    }
+
+    public boolean issub() throws IOException {
+        System.out.println("빼실 재료 있으신가요>(y/n)");
+        return isYesorNo();
+    }
+
+    //입력 유효성 검사
 
     //둘중에 하나만 골라 y or n
     public boolean isYesorNo() throws IOException {

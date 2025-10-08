@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+//햄버거 서비스 레이어
 public class HamburgerService {
     private final HamburgerRepository hamburgerRepository;
     private final IngredientService ingredientService;
