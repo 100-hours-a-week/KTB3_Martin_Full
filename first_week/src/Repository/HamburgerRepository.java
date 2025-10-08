@@ -1,9 +1,7 @@
 package Repository;
 
-import Dto.Hamburger.Hamburger;
-import Dto.Ingredient.Ingredient;
+import Object.Hamburger.Hamburger;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 

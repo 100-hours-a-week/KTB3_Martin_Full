@@ -1,6 +1,6 @@
-package Dto.Hamburger;
+package Object.Hamburger;
 
-import Dto.Ingredient.*;
+import Object.Ingredient.*;
 
 public class Cheese extends Hamburger {
 
@@ -13,7 +13,7 @@ public class Cheese extends Hamburger {
                 break;
             }
         }
-        IngredientList.add(new Raw_Patty());
+        IngredientList.add(new RawPatty());
 
         StringBuilder sb = new StringBuilder();
 

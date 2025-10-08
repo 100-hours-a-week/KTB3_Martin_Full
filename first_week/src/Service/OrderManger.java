@@ -1,6 +1,8 @@
-package Controller;
+package Service;
 
-import Dto.Hamburger.*;
+import Object.Hamburger.*;
+import Object.Ingredient.*;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +17,15 @@ enum SetofHamburger {
 
 //입력값 유효성 검사
 public class OrderManger {
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    private final HamburgerService hamburgerService;
+    private final BufferedReader br;
+
+
+    public OrderManger() {
+        this.hamburgerService = new HamburgerService();
+        this.br = new BufferedReader(new InputStreamReader(System.in));
+    }
 
 
     //햄버거 선택

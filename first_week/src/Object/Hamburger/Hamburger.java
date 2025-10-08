@@ -1,16 +1,20 @@
-package Dto.Hamburger;
+package Object.Hamburger;
 
-import Dto.Ingredient.Ingredient;
+import Object.Ingredient.Ingredient;
+import Object.Ingredient.Ingredients;
+import Object.Ingredient.Patty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Hamburger {
     //재료들을 모아놓은 리스트
-    protected ArrayList<Ingredient> IngredientList;
+    protected HashMap<String, Ingredients> IngredientList;
+    protected Patty patty;
     //버거종류
     protected String name;
 
-    //버거 객체별 재료이름 변경을 위한 추상 메서드
+    //버거 객체별 재료변경을 위한 추상 메서드
     public abstract boolean add(String name, int num);
 
     public abstract boolean sub(String name, int num);

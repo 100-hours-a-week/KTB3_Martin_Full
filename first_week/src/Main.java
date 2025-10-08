@@ -7,8 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import Dto.Hamburger.*;
-import Controller.OrderManger;
+import Object.Hamburger.*;
+import Service.OrderManger;
 
 
 public class Main {

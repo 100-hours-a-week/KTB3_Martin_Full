@@ -1,4 +1,4 @@
-package Dto.Ingredient;
+package Object.Ingredient;
 
 public class  Ingredient{
     //재료 이름

@@ -1,12 +1,12 @@
-package Dto.Hamburger;
+package Object.Hamburger;
 
-import Dto.Ingredient.Bulgogi_Patty;
+import Object.Ingredient.BulgogiPatty;
 
 public class Bulgogi extends Hamburger {
 
     public Bulgogi() {
         name = "불고기버거";
-        IngredientList.add(new Bulgogi_Patty());
+        IngredientList.add(new BulgogiPatty());
 
         StringBuilder sb = new StringBuilder();
 

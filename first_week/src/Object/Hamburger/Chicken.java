@@ -1,14 +1,11 @@
-package Dto.Hamburger;
+package Object.Hamburger;
 
-import Dto.Ingredient.*;
+import Object.Ingredient.*;
 
 public class Chicken extends Hamburger {
     public Chicken() {
         name = "치킨버거";
-        IngredientList.add(new Chicken_Patty((true)));
-
-        StringBuilder sb = new StringBuilder();
-
+        patty = new ChickenPatty(true);
     }
 
 
