@@ -1,18 +1,24 @@
 package Service;
 
-import Object.Hamburger.Bulgogi;
-import Object.Hamburger.Cheese;
-import Object.Hamburger.Chicken;
-import Object.Hamburger.Hamburger;
+import Object.Hamburger.*;
 import Service.*;
 
 import java.io.IOException;
 
 public class HamburgerFactory {
-    private final IngredientService ingredientService;
 
-    public HamburgerFactory(IngredientService ingredientService) {
-        this.ingredientService = ingredientService;
+    public Hamburger create(String request) throws IllegalArgumentException{
+        Hamburger hamburger;
+
+        SetofHamburger burger = SetofHamburger.valueOf(request);
+        switch (burger) {
+            case SetofHamburger.불고기버거 -> hamburger = new Bulgogi();
+            case SetofHamburger.치킨버거 -> hamburger = new Chicken();
+            case SetofHamburger.치즈버거 -> hamburger = new Cheese();
+            default -> throw new IllegalArgumentException();
+        }
+
+        return hamburger;
     }
 
 }

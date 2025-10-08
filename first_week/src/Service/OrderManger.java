@@ -25,17 +25,12 @@ public class OrderManger {
 
     //햄버거 선택
     public Hamburger getHamburger() throws IOException {
-        String line = br.readLine();
+        String request;
         Hamburger hamburger;
         while (true) {
             try {
-                SetofHamburger burger = SetofHamburger.valueOf(line);
-                switch (burger) {
-                    case SetofHamburger.불고기버거 -> hamburger = new Bulgogi();
-                    case SetofHamburger.치킨버거 -> hamburger = new Chicken();
-                    case SetofHamburger.치즈버거 -> hamburger = new Cheese();
-                    default -> throw new IllegalArgumentException();
-                }
+                request = br.readLine();
+                hamburger = hamburgerService.getHamburger(request);
 
             } catch (IllegalArgumentException e) {
                 System.out.println("다시 입력해주세요");
@@ -43,13 +38,7 @@ public class OrderManger {
             }
             break;
         }
-
-        hamburger.ShowIngredient();
-
-
         return hamburger;
-
-
     }
 
     //둘중에 하나만 골라 y or n
