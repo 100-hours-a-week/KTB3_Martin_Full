@@ -16,13 +16,9 @@ public class IngredientService {
         }
     }
 
-    public String ShowIngredientForAdd(){
-        StringBuilder sb = new StringBuilder();
-        for (String s : AddableIngredient.keySet()) {
-            sb.append(s).append(" ");
-        }
 
-        return sb.toString();
+    public HashMap<String, Ingredients> getAddableIngredient() {
+        return AddableIngredient;
     }
 
     public boolean isAddable(String name){
@@ -41,6 +37,25 @@ public class IngredientService {
             newingredient.setNum(num);
             tmp.put(name, newingredient);
         }
+        return hamburger;
+    }
+
+    public boolean isSubtractable(Hamburger hamburger, String name, int num){
+        if(hamburger.getIngredientList().containsKey(name)){
+            Ingredients tmp = hamburger.getIngredientList().get(name);
+            return tmp.getNum() >= num;
+        }
+        else return false;
+    }
+
+    public Hamburger subIngredient(Hamburger hamburger, String name, int num){
+        HashMap<String, Ingredients> tmp = hamburger.getIngredientList();
+
+        Ingredients target = tmp.get(name);
+        int targetnum = target.getNum() - num;
+        if(targetnum ==0) tmp.remove(name);
+        else tmp.get(name).setNum(targetnum);
+
         return hamburger;
     }
 

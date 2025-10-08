@@ -7,7 +7,9 @@ import Object.Ingredient.Ingredients;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 
 ;
@@ -35,7 +37,7 @@ public class OrderManager {
         StringBuilder sb = new StringBuilder();
 
         sb.append("무슨 종류로 드실건가요?\n");
-        sb.append("종류: ").append(hamburgerService.getHamburgerType()).append("\n");
+        sb.append("종류: ").append(getHamburgerType()).append("\n");
         sb.append("문자로 입력해주세요");
         System.out.println(sb.toString());
 
@@ -60,11 +62,21 @@ public class OrderManager {
         return hamburger;
     }
 
+    public String getHamburgerType(){
+        StringBuilder sb = new StringBuilder();
+        List<SetofHamburger> menu= Arrays.asList(SetofHamburger.values());
+        for(SetofHamburger burger:menu){
+            sb.append(burger).append(" ");
+        }
+
+        return sb.toString();
+    }
+
 
     //재료 추가 입출력
     public Hamburger addIngredient(Hamburger hamburger) throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append("추가 가능한 재료 : ").append(hamburgerService.showIngredientForAdd()).append("\n");
+        sb.append("추가 가능한 재료 : ").append(showIngredientForAdd()).append("\n");
         sb.append("추가할 재료를 선택해주세요");
 
         String name;
@@ -79,9 +91,6 @@ public class OrderManager {
                 continue;
             }
             break;
-
-
-
         }
 
         hamburger = hamburgerService.addIngredient(hamburger, name, num);
@@ -93,6 +102,34 @@ public class OrderManager {
         StringBuilder sb = new StringBuilder();
         showNowIngredient(hamburger);
 
+        String name;
+        int num;
+
+        while(true){
+            System.out.println("뺄 재료를 선택해주세요");
+            name = br.readLine();
+            System.out.println("얼마나 빼실건가요?");
+            num = checkIntAndPositive();
+            if(!hamburgerService.isSubtractable(hamburger, name, num)){
+                System.out.println("다시 입력해주세요");
+                continue;
+            }
+            break;
+        }
+
+        hamburger = hamburgerService.subIngredient(hamburger, name, num);
+
+        return hamburger;
+
+    }
+
+    public String showIngredientForAdd(){
+        StringBuilder sb = new StringBuilder();
+        for (String s : hamburgerService.getAddableIngredient().keySet()) {
+            sb.append(s).append(" ");
+        }
+
+        return sb.toString();
     }
 
     public void showNowIngredient(Hamburger hamburger){

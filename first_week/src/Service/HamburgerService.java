@@ -37,19 +37,12 @@ public class HamburgerService {
         return hamburger;
     }
 
-    public String getHamburgerType(){
-        StringBuilder sb = new StringBuilder();
-        List<SetofHamburger> menu= Arrays.asList(SetofHamburger.values());
-        for(SetofHamburger burger:menu){
-            sb.append(burger).append(" ");
-        }
-
-        return sb.toString();
+    public HashMap<String, Ingredients> getAddableIngredient() {
+        return ingredientService.getAddableIngredient();
     }
 
-    public String showIngredientForAdd(){
-        return ingredientService.ShowIngredientForAdd();
-    }
+
+
 
     public boolean isAddable(String name){
         return ingredientService.isAddable(name);
@@ -60,6 +53,13 @@ public class HamburgerService {
 
     }
 
+    public boolean isSubtractable(Hamburger hamburger, String name, int num){
+        return ingredientService.isSubtractable(hamburger, name, num);
+    }
+
+    public Hamburger subIngredient(Hamburger hamburger, String name, int num){
+     return ingredientService.subIngredient(hamburger, name, num);
+    }
 
     public Hamburger saveHamburger(Hamburger hamburger) {
         return hamburgerRepository.save(hamburger);
