@@ -1,7 +1,6 @@
 package Service;
 
-import Object.Hamburger.Cheese;
-import Object.Hamburger.Hamburger;
+import Object.Hamburger.*;
 import Object.Ingredient.Ingredients;
 import Object.Ingredient.Patty;
 import Repository.HamburgerRepository;
@@ -15,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HamburgerService {
     private final HamburgerRepository hamburgerRepository;
-    private final HamburgerFactory hamburgerFactory;
     private final IngredientService ingredientService;
 
 
@@ -23,11 +21,19 @@ public class HamburgerService {
     public HamburgerService() {
         this.hamburgerRepository = new HamburgerRepository();
         this.ingredientService = new IngredientService();
-        this.hamburgerFactory = new HamburgerFactory();
     }
 
     public Hamburger getHamburger(String request)throws IllegalArgumentException {
-        return hamburgerFactory.create(request);
+        Hamburger hamburger = null;
+
+        SetofHamburger burger = SetofHamburger.valueOf(request);
+        switch (burger) {
+            case 불고기버거 -> hamburger = new Bulgogi();
+            case 치킨버거 -> hamburger = new Chicken();
+            case 치즈버거 -> hamburger = new Cheese();
+        }
+
+        return hamburger;
     }
 
     public Hamburger saveHamburger(Hamburger hamburger) {

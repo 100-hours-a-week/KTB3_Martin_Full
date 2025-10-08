@@ -1,19 +1,17 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import Service.OrderManager;
 
-import Object.Hamburger.*;
-import Service.OrderManger;
+import java.io.IOException;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
+        OrderManager orderManager = new OrderManager();
+        orderManager.getHamburger();
+
+    }
+
+    /*public static void main(String[] args) throws IOException, InterruptedException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         OrderManger orderManger = new OrderManger();
 
@@ -121,5 +119,5 @@ public class Main {
             System.out.println("프로그램 종료");
             return ;
         }
-    }
+    }*/
 }

@@ -11,13 +11,13 @@ import java.io.InputStreamReader;
 ;
 
 //입력값 유효성 검사
-public class OrderManger {
+public class OrderManager {
 
     private final HamburgerService hamburgerService;
     private final BufferedReader br;
 
 
-    public OrderManger() {
+    public OrderManager() {
         this.hamburgerService = new HamburgerService();
         this.br = new BufferedReader(new InputStreamReader(System.in));
     }
