@@ -7,7 +7,8 @@ public enum Ingredients {
     TOMATO("토마토",6),
     ONION("양파",7),
     MAYO("마요네즈",100),
-    BACON("베이컨",90);
+    BACON("베이컨",90),
+    KETCHUP("케첩", 70);
 
     private final String displayName;
     private final int kcal;

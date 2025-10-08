@@ -46,7 +46,7 @@ public class Main {
                 String name = br.readLine();
 
                 System.out.println("얼마나 추가하실건가요");
-                int num = orderManger.IntAndPostiveChecker();
+                int num = orderManger.checkIntAndPositive();
 
                 if(hamburger.add(name,num)){
                     System.out.println("재료를 더 추가하시나요?(y/n)");
@@ -71,7 +71,7 @@ public class Main {
                 String name = br.readLine();
 
                 System.out.println("얼마나 빼실건가요");
-                int num = orderManger.IntAndPostiveChecker();
+                int num = orderManger.checkIntAndPositive();
 
                 if (hamburger.sub(name, num)) {
                     System.out.println("더빼실 재료 있으신가요?(y/n)");

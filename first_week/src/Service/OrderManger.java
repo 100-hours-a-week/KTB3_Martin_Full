@@ -1,7 +1,6 @@
 package Service;
 
 import Object.Hamburger.*;
-import Object.Ingredient.*;
 
 
 import java.io.BufferedReader;
@@ -9,11 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-enum SetofHamburger {
-    치즈버거,
-    불고기버거,
-    치킨버거
-};
+;
 
 //입력값 유효성 검사
 public class OrderManger {
@@ -75,7 +70,7 @@ public class OrderManger {
     }
 
     //int값을 넣었는지 확인
-    public int IntAndPostiveChecker() throws IOException {
+    public int checkIntAndPositive() throws IOException {
         int num;
         while (true) {
             try {

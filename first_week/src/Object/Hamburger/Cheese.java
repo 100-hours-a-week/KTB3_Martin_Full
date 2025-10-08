@@ -2,32 +2,29 @@ package Object.Hamburger;
 
 import Object.Ingredient.*;
 
+import java.util.HashMap;
+
+import static Object.Ingredient.Ingredients.*;
+import static Object.Ingredient.Ingredients.MAYO;
+
 public class Cheese extends Hamburger {
 
     public Cheese() {
-        name = "치즈버거";
+        super.name = "치즈버거";
+        super.patty = new RawPatty();
+        IngredientList = new HashMap<>();
 
-        for (Ingredient i : IngredientList) {
-            if (i.getName().equals("치즈")) {
-                i.setNum(i.getNum() + 1);
-                break;
-            }
-        }
-        IngredientList.add(new RawPatty());
 
-        StringBuilder sb = new StringBuilder();
-
+        Ingredients bun = BUN;
+        bun.setNum(2);
+        IngredientList.put(bun.getDisplayName(), bun);
+        IngredientList.put(LETTUCE.getDisplayName(), LETTUCE);
+        IngredientList.put(TOMATO.getDisplayName(), TOMATO);
+        IngredientList.put(ONION.getDisplayName(), ONION);
+        IngredientList.put(MAYO.getDisplayName(), MAYO);
+        IngredientList.put(CHEESE.getDisplayName(), CHEESE);
     }
 
 
-    @Override
-    public boolean add(String name, int num) {
-        return super.addIngredient(name, num);
 
-    }
-
-    public boolean sub(String name, int num) {
-        return super.subIngredient(name, num);
-
-    }
 }
