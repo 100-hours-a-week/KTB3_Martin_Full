@@ -5,8 +5,7 @@ import Object.Ingredient.Ingredients;
 import Object.Ingredient.Patty;
 import Repository.HamburgerRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +36,30 @@ public class HamburgerService {
 
         return hamburger;
     }
+
+    public String getHamburgerType(){
+        StringBuilder sb = new StringBuilder();
+        List<SetofHamburger> menu= Arrays.asList(SetofHamburger.values());
+        for(SetofHamburger burger:menu){
+            sb.append(burger).append(" ");
+        }
+
+        return sb.toString();
+    }
+
+    public String showIngredientForAdd(){
+        return ingredientService.ShowIngredientForAdd();
+    }
+
+    public boolean isAddable(String name){
+        return ingredientService.isAddable(name);
+    }
+
+    public Hamburger addIngredient(Hamburger hamburger, String name, int num){
+        return ingredientService.addIngredient(hamburger, name, num);
+
+    }
+
 
     public Hamburger saveHamburger(Hamburger hamburger) {
         return hamburgerRepository.save(hamburger);

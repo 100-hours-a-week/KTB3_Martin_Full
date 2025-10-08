@@ -1,13 +1,13 @@
 package Service;
 
 import Object.Hamburger.*;
+import Object.Ingredient.Ingredients;
 
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 
 ;
@@ -35,16 +35,9 @@ public class OrderManager {
         StringBuilder sb = new StringBuilder();
 
         sb.append("무슨 종류로 드실건가요?\n");
-        sb.append("종류: ");
-
-        List<SetofHamburger> menu= Arrays.asList(SetofHamburger.values());
-        for(SetofHamburger burger:menu){
-            sb.append(burger).append(" ");
-        }
-        sb.append("\n");
+        sb.append("종류: ").append(hamburgerService.getHamburgerType()).append("\n");
         sb.append("문자로 입력해주세요");
         System.out.println(sb.toString());
-        sb = new StringBuilder();
 
 
 
@@ -61,18 +54,60 @@ public class OrderManager {
             }
             break;
         }
+        sb = new StringBuilder();
         sb.append("선택한 햄버거: ").append(hamburger.getName());
         System.out.println(sb.toString());
         return hamburger;
     }
 
 
+    //재료 추가 입출력
+    public Hamburger addIngredient(Hamburger hamburger) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("추가 가능한 재료 : ").append(hamburgerService.showIngredientForAdd()).append("\n");
+        sb.append("추가할 재료를 선택해주세요");
 
-    public Hamburger addingredient(Hamburger hamburger){
+        String name;
+        int num;
+        while(true){
+            System.out.println(sb.toString());
+            name = br.readLine();
+            System.out.println("얼마나 추가 하실건가요?");
+            num = checkIntAndPositive();
+            if(!hamburgerService.isAddable(name)){
+                System.out.println("다시 입력해주세요");
+                continue;
+            }
+            break;
+
+
+
+        }
+
+        hamburger = hamburgerService.addIngredient(hamburger, name, num);
+
         return hamburger;
     }
 
-    //재료 추가 입출력
+    public Hamburger subIngredient(Hamburger hamburger) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        showNowIngredient(hamburger);
+
+    }
+
+    public void showNowIngredient(Hamburger hamburger){
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n").append("현재 햄버거의 재료: ").append("\n");
+        HashMap<String, Ingredients> tmp = hamburger.getIngredientList();
+        for (Ingredients i : tmp.values()) {
+            sb.append(i.getDisplayName()).append(" ").append(i.getNum());
+            sb.append(" ").append(i.getNum()*i.getKcal()).append("Kcal").append("\n");
+        }
+        System.out.println(sb.toString());
+
+    }
+
+
 
 
 

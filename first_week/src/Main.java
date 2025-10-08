@@ -14,34 +14,25 @@ public class Main {
 
         Hamburger hamburger;
         orderManager.start();
-        hamburger = orderManager.getHamburger();
+//        hamburger = orderManager.getHamburger();
 
 
-//        while(true){
-//            Hamburger hamburger;
-//
-//            //햄버거 종류 선택 지점
-//            hamburger = orderManager.getHamburger();
-//
-//            //재료추가 지점
-//            boolean answer =orderManager.isadd();
-//            while(answer){
-//                System.out.println("추가가능한 재료 : 빵, 양상추, 토마토, 양파, 소스, 베이컨, 치즈, 패티");
-//                System.out.println("추가할 재료를 입력해주세요");
-//                String name = br.readLine();
-//
-//                System.out.println("얼마나 추가하실건가요");
-//                int num = orderManger.checkIntAndPositive();
-//
-//                if(hamburger.add(name,num)){
-//                    System.out.println("재료를 더 추가하시나요?(y/n)");
-//                    answer = orderManger.isYesorNo();
-//
-//                }
-//                else{
-//                    System.out.println("재료의 이름이 잘못된것 같습니다 재료 선택으로 돌아갑니다.");
-//                }
-//            }
+
+        while(true) {
+
+            //햄버거 종류 선택 지점
+            hamburger = orderManager.getHamburger();
+            orderManager.showNowIngredient(hamburger);
+
+            //재료추가 지점
+            boolean answer = orderManager.isadd();
+            while (answer) {
+                hamburger = orderManager.addIngredient(hamburger);
+                orderManager.showNowIngredient(hamburger);
+                answer = orderManager.isadd();
+            }
+
+        }
 //
 //            //재료빼기 지점
 //            System.out.println("빼실 재료 있으신가요?(y/n)");

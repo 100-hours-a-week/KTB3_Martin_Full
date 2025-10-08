@@ -1,5 +1,6 @@
 package Service;
 
+import Object.Hamburger.Hamburger;
 import Object.Ingredient.Ingredients;
 import java.util.*;
 
@@ -15,14 +16,35 @@ public class IngredientService {
         }
     }
 
-    public String Showaddable(){
+    public String ShowIngredientForAdd(){
         StringBuilder sb = new StringBuilder();
         for (String s : AddableIngredient.keySet()) {
-            sb.append(s).append("\n");
+            sb.append(s).append(" ");
         }
 
         return sb.toString();
     }
+
+    public boolean isAddable(String name){
+        return AddableIngredient.containsKey(name);
+    }
+
+    public Hamburger addIngredient(Hamburger hamburger, String name, int num) {
+        HashMap<String, Ingredients> tmp = hamburger.getIngredientList();
+
+        if(tmp.containsKey(name)){
+            int presentnum = tmp.get(name).getNum();
+            tmp.get(name).setNum(num+ presentnum);
+        }
+        else{
+            Ingredients newingredient = AddableIngredient.get(name);
+            newingredient.setNum(num);
+            tmp.put(name, newingredient);
+        }
+        return hamburger;
+    }
+
+
 
 
 }
