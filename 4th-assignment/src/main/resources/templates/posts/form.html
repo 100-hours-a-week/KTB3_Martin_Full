@@ -2,23 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>새 도서 등록</title>
+    <title th:text="${postDto.id == null} ? '새 게시글 등록' : '게시글 수정'"></title>
 </head>
 <body>
-<form id = "myform" method="post" action="/posts" th:object="${postDto}">
-    <label>제목</label>
-    <input type="text" th:field="*{title}" placeholder="제목" /><br>
-    <label>내용</label>
-    <input type="text" th:field="*{content}" placeholder="내용" /><br>
 
+<h1 th:text="${postDto.id == null} ? '게시글 작성' : '게시글 수정'"></h1>
+
+<form id="myform"
+      th:object="${postDto}"
+      method="post"
+      th:action="${postDto.id == null} ? @{/posts} : @{/posts/{id}(id=${postDto.id})}">
+
+    <!-- 수정 시에만 PUT 요청으로 변환 -->
+    <input type="hidden" name="_method" th:if="${postDto.id != null}" value="put">
+
+    <label>제목</label><br>
+    <input type="text" th:field="*{title}" /><br><br>
+
+    <label>내용</label><br>
+    <textarea th:field="*{content}"></textarea><br><br>
 
 </form>
 
-<br>
+<!-- 폼 외부에 버튼 배치 -->
+<button type="submit" form="myform" th:text="${postDto.id == null} ? '저장' : '수정'"></button><br><br>
 
-<button type="submit" form = "myform">저장</button><br>
 <a th:href="@{/posts}">목록으로 돌아가기</a>
-
 
 </body>
 </html>

@@ -40,6 +40,11 @@ public class PostRepository {
         postmap.put(sequence, postDto);
         return postDto;
     }
+    public PostDto update(Long id, PostDto postDto) {
+        postmap.replace(id, postDto);
+        return postmap.get(id);
+    }
+
 
 
 

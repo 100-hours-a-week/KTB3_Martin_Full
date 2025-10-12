@@ -48,4 +48,17 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    @GetMapping("/{id}/form")
+    public String getEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("postDto", postService.getPost(id));
+        return "posts/form";
+    }
+
+    @PutMapping("/{id}")
+    public String updatePost(@PathVariable Long id, @ModelAttribute PostDto postDto) {
+        postService.updatePost(id, postDto);
+        return "redirect:/posts/" + id;
+
+    }
+
 }

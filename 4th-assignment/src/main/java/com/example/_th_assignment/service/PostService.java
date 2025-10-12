@@ -36,6 +36,11 @@ public class PostService {
         postDto.setIsdeleted(true);
     }
 
+    public PostDto updatePost(Long id, PostDto postDto) {
+        return postRepository.update(id, postDto);
+    }
+
+
 
 
 
