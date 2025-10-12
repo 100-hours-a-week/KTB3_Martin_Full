@@ -1,5 +1,6 @@
 package com.example._th_assignment.controller;
 
+import com.example._th_assignment.dto.CommentDto;
 import com.example._th_assignment.dto.PostDto;
 import com.example._th_assignment.service.CommentService;
 import com.example._th_assignment.service.PostService;
@@ -30,6 +31,7 @@ public class PostController {
     public String getPost(@PathVariable Long id, Model model) {
         model.addAttribute("post", postService.getPost(id));
         model.addAttribute("comments", commentService.getByPostId(id));
+        model.addAttribute("newcomment", new CommentDto());
         return "posts/detail";
     }
 

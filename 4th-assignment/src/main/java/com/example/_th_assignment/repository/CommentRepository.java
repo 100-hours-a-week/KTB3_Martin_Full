@@ -22,6 +22,7 @@ public class CommentRepository {
 
     public CommentDto save(Long postId, CommentDto comment) {
         comment.setId(++sequence);
+        comment.setPostID(postId);
         commentStore.computeIfAbsent(postId, k -> new LinkedHashMap<>())
                 .put(sequence, comment);
 

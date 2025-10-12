@@ -51,6 +51,7 @@ public class OrderManager {
         while (true) {
             try {
                 request = br.readLine();
+                request = request.replaceAll("\\s", "");
                 hamburger = hamburgerService.getHamburger(request);
 
             } catch (IllegalArgumentException e) {

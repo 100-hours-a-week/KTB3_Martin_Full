@@ -30,6 +30,11 @@
     </li>
 </ul>
 
+<form th:action="@{/comments/{id}(id=${post.id})}" th:object="${newcomment}" method="post">
+    <input type="text" th:field="*{content}" /><br>
+    <button type="submit" th:text="댓글저장"></button><br><br>
+</form>
+
 <hr>
 
 
