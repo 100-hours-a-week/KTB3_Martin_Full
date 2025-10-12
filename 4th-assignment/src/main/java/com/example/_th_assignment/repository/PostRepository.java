@@ -1,7 +1,9 @@
 package com.example._th_assignment.repository;
 
 import com.example._th_assignment.dto.PostDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,11 @@ public class PostRepository {
     public PostDto update(Long id, PostDto postDto) {
         postmap.replace(id, postDto);
         return postmap.get(id);
+    }
+
+    public void delete(long id) {
+        PostDto postDto = getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        postDto.setIsdeleted(true);
     }
 
 

@@ -1,32 +1,29 @@
 package com.example._th_assignment.dto;
 
-import org.springframework.stereotype.Component;
-
-public class PostDto {
+public class CommentDto {
     private Long id;
-    private String title;
+    private Long postID;
+//    private String author;
     private String content;
     private Boolean isdeleted = false;
 
-    public PostDto() {
+    public CommentDto() {
     }
-    public PostDto(String title, String content) {
-        id = 0L;
-        this.title = title;
+    public CommentDto(Long postID, String content) {
+        this.postID = postID;
         this.content = content;
     }
-
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getTitle() {
-        return title;
+    public Long getPostID() {
+        return postID;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPostID(Long postID) {
+        this.postID = postID;
     }
     public String getContent() {
         return content;
@@ -34,13 +31,13 @@ public class PostDto {
     public void setContent(String content) {
         this.content = content;
     }
-
     public Boolean getIsdeleted() {
         return isdeleted;
     }
     public void setIsdeleted(Boolean isdeleted) {
         this.isdeleted = isdeleted;
     }
+
 
 
 }

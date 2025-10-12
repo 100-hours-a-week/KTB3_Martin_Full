@@ -32,8 +32,7 @@ public class PostService {
     }
 
     public void deletePost(long id) {
-        PostDto postDto = getPost(id);
-        postDto.setIsdeleted(true);
+        postRepository.delete(id);
     }
 
     public PostDto updatePost(Long id, PostDto postDto) {
