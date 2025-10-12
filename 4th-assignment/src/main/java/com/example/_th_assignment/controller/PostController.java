@@ -1,12 +1,11 @@
 package com.example._th_assignment.controller;
 
+import com.example._th_assignment.dto.PostDto;
 import com.example._th_assignment.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/posts")
@@ -30,5 +29,17 @@ public class PostController {
         return "posts/detail";
     }
 
+    @GetMapping("/form")
+    public String getPostForm(Model model) {
+        model.addAttribute("postDto", new PostDto());
+        return "posts/form";
+    }
+
+    @PostMapping
+    public String savePost(@ModelAttribute PostDto postDto) {
+        postService.savePost(postDto);
+        return "redirect:/posts";
+
+    }
 
 }
