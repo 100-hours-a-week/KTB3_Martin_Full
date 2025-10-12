@@ -33,7 +33,13 @@ public class CommentRepository {
     public List<CommentDto> getbyPostId(long postId) {
         HashMap<Long, CommentDto> comments = commentStore.
                 computeIfAbsent(postId,  v -> new LinkedHashMap<>());
-        return new ArrayList<>(comments.values());
+        ArrayList<CommentDto> commentview = new ArrayList<>();
+
+        for(CommentDto comment : comments.values()) {
+            if(!comment.getIsdeleted()) commentview.add(comment);
+        }
+
+        return commentview;
 
     }
 
