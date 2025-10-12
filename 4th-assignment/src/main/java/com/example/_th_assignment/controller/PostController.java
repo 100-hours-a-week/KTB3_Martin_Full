@@ -1,6 +1,7 @@
 package com.example._th_assignment.controller;
 
 import com.example._th_assignment.dto.PostDto;
+import com.example._th_assignment.service.CommentService;
 import com.example._th_assignment.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     @Autowired
     private PostService postService;
+    @Autowired
+    private CommentService commentService;
 
     public PostController(PostService postService) {
         this.postService = postService;
@@ -26,6 +29,7 @@ public class PostController {
     @GetMapping("/{id}")
     public String getPost(@PathVariable Long id, Model model) {
         model.addAttribute("post", postService.getPost(id));
+        model.addAttribute("comments", commentService.getByPostId(id));
         return "posts/detail";
     }
 

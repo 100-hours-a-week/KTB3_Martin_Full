@@ -9,16 +9,20 @@ import java.util.*;
 @Repository
 public class CommentRepository {
     private Long sequence;
-    private final HashMap<Long, HashMap<Long, CommentDto>> commentStore;
+    private final HashMap<Long, LinkedHashMap<Long, CommentDto>> commentStore;
 
     public CommentRepository() {
         commentStore = new HashMap<>();
         sequence = 0L;
+
+        save(1L, new CommentDto(1L, "good"));
+        save(2L, new CommentDto(2L, "good"));
+        save(2L, new CommentDto(2L, "good"));
     }
 
     public CommentDto save(Long postId, CommentDto comment) {
         comment.setId(++sequence);
-        commentStore.computeIfAbsent(postId, k -> new HashMap<>())
+        commentStore.computeIfAbsent(postId, k -> new LinkedHashMap<>())
                 .put(sequence, comment);
 
         return comment;
@@ -27,13 +31,13 @@ public class CommentRepository {
 
     public List<CommentDto> getbyPostId(long postId) {
         HashMap<Long, CommentDto> comments = commentStore.
-                computeIfAbsent(postId,  v -> new HashMap<>());
+                computeIfAbsent(postId,  v -> new LinkedHashMap<>());
         return new ArrayList<>(comments.values());
 
     }
 
     public Optional<CommentDto> getbyCommentId(long postId, long commentId) {
-        HashMap<Long, CommentDto> comments = commentStore.get(postId);
+        LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
 
         if (comments == null) {
             return Optional.empty();
