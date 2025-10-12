@@ -25,10 +25,14 @@ public class PostRepository {
 
 
     public List<PostDto> getAllList(){
-        return new ArrayList<>(postmap.values());
+        ArrayList<PostDto> list = new ArrayList<>();
+        for(PostDto post : postmap.values()){
+            if(!post.getIsdeleted()) list.add(post);
+        }
+        return list;
     }
     public Optional<PostDto> getbyId(long id) {
-        return Optional.ofNullable(postmap.get(id));
+        return Optional.ofNullable(postmap.get(id)).filter(post -> !post.getIsdeleted());
     }
 
     public PostDto save(PostDto postDto) {
@@ -36,6 +40,7 @@ public class PostRepository {
         postmap.put(sequence, postDto);
         return postDto;
     }
+
 
 
 

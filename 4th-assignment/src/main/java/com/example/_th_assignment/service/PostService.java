@@ -31,6 +31,11 @@ public class PostService {
         return postRepository.save(postDto);
     }
 
+    public void deletePost(long id) {
+        PostDto postDto = getPost(id);
+        postDto.setIsdeleted(true);
+    }
+
 
 
 

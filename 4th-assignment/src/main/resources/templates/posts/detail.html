@@ -8,6 +8,11 @@
 <h1 th:text = "${post.title}"></h1>
 
 <p th:text = "${post.content}"></p>
+
+<form th:action="@{/posts/{id}(id=${post.id})}" th:method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">삭제</button>
+</form>
 <a href = "/posts">목록으로 돌아가기</a>
 
 

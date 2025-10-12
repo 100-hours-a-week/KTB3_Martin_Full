@@ -7,6 +7,7 @@ public class PostDto {
     private Long id;
     private String title;
     private String content;
+    private Boolean isdeleted = false;
 
     public PostDto() {
     }
@@ -33,6 +34,13 @@ public class PostDto {
     }
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Boolean getIsdeleted() {
+        return isdeleted;
+    }
+    public void setIsdeleted(Boolean isdeleted) {
+        this.isdeleted = isdeleted;
     }
 
 }
