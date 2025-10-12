@@ -14,7 +14,6 @@ public class Main {
 
         Hamburger hamburger;
         orderManager.start();
-//        hamburger = orderManager.getHamburger();
 
 
 
@@ -58,22 +57,6 @@ public class Main {
 
         }
 
-//            hamburgers.add(hamburger);
-//
-//            System.out.println("버거 종류를 더 추가하시겠나요?(y/n)");
-//            answer = orderManger.isYesorNo();
-//            if(answer){
-//                System.out.println("종류 선택 지점으로 돌아갑니다.\n");
-//                continue;
-//            }
-//
-//            else{
-//                System.out.println("총 칼로리를 계산합니다.");
-//
-//            }
-//
-//            System.out.println("프로그램 종료");
-//            return ;
-//        }
+
     }
 }

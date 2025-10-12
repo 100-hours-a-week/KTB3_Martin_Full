@@ -60,7 +60,7 @@ public class OrderManager {
             break;
         }
         sb = new StringBuilder();
-        sb.append("선택한 햄버거: ").append(hamburger.getName());
+        sb.append("선택한 햄버거: ").append(hamburger.getName()).append("\n");
         sb.append("패티 : ").append(hamburger.getPatty().getName());
         sb.append(" ").append(hamburger.getPatty().getKcal()).append("kcal");
         System.out.println(sb.toString());
