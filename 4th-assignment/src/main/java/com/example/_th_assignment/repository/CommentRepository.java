@@ -1,7 +1,6 @@
 package com.example._th_assignment.repository;
 
 import com.example._th_assignment.dto.CommentDto;
-import com.example._th_assignment.dto.PostDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public class CommentRepository {
 
     public CommentDto save(Long postId, CommentDto comment) {
         comment.setId(++sequence);
-        comment.setPostID(postId);
+        comment.setPostId(postId);
         commentStore.computeIfAbsent(postId, k -> new LinkedHashMap<>())
                 .put(sequence, comment);
 
@@ -43,7 +42,7 @@ public class CommentRepository {
 
     }
 
-    public Optional<CommentDto> getbyCommentId(long postId, long commentId) {
+    public Optional<CommentDto> getbyPostIdAndCommentId(long postId, long commentId) {
         LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
 
         if (comments == null) {
@@ -63,9 +62,9 @@ public class CommentRepository {
         }
     }
 
-    public CommentDto update(CommentDto commentDto) {
-        HashMap<Long, CommentDto> comments = commentStore.get(commentDto.getPostID());
-        comments.replace(commentDto.getId(),  commentDto);
+    public CommentDto update(Long postId, Long commentId, CommentDto commentDto) {
+        HashMap<Long, CommentDto> comments = commentStore.get(postId);
+        comments.replace(commentId,  commentDto);
         return comments.get(commentDto.getId());
     }
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 수정 폼</title>
+</head>
+<body>
+<form th:object="${comment}" method = "post"
+      th:action="@{/comments/{postid}/{id}(postid=*{postid}, id=*{id})}">>
+    <input type="hidden" name="_method" value="put">
+    <label>내용</label>
+    <input type="text" th:field="*{content}">
+    <button type="submit">수정</button>
+</form>
+
+</body>
+</html>

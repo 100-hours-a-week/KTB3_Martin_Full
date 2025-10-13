@@ -2,7 +2,7 @@ package com.example._th_assignment.dto;
 
 public class CommentDto {
     private Long id;
-    private Long postID;
+    private Long postid;
 //    private String author;
     private String content;
     private Boolean isdeleted = false;
@@ -10,7 +10,7 @@ public class CommentDto {
     public CommentDto() {
     }
     public CommentDto(Long postID, String content) {
-        this.postID = postID;
+        this.postid = postID;
         this.content = content;
     }
     public Long getId() {
@@ -19,11 +19,11 @@ public class CommentDto {
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getPostID() {
-        return postID;
+    public Long getPostid() {
+        return postid;
     }
-    public void setPostID(Long postID) {
-        this.postID = postID;
+    public void setPostId(Long postID) {
+        this.postid = postID;
     }
     public String getContent() {
         return content;

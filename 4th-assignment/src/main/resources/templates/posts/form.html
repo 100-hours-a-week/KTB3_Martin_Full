@@ -13,7 +13,6 @@
       method="post"
       th:action="${postDto.id == null} ? @{/posts} : @{/posts/{id}(id=${postDto.id})}">
 
-    <!-- 수정 시에만 PUT 요청으로 변환 -->
     <input type="hidden" name="_method" th:if="${postDto.id != null}" value="put">
 
     <label>제목</label><br>
@@ -25,7 +24,7 @@
 </form>
 
 <!-- 폼 외부에 버튼 배치 -->
-<button type="submit" form="myform" th:text="${postDto.id == null} ? '저장' : '수정'"></button><br><br>
+<button type="submit" form="myform" th:text="${postDto.id == null} ? '등록' : '수정'"></button><br><br>
 
 <a th:href="@{/posts}">목록으로 돌아가기</a>
 
