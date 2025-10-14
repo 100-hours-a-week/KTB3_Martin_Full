@@ -1,7 +1,7 @@
-package com.example._th_assignment.service;
+package com.example._th_assignment.Service;
 
-import com.example._th_assignment.dto.PostDto;
-import com.example._th_assignment.repository.PostRepository;
+import com.example._th_assignment.Dto.PostDto;
+import com.example._th_assignment.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,10 @@ import java.util.List;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
 
+    private final PostRepository postRepository;
+
+    @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -24,7 +25,7 @@ public class PostService {
     }
 
     public PostDto getPost(long id) {
-        return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"is not here"));
     }
 
     public PostDto savePost(PostDto postDto)throws ResponseStatusException {

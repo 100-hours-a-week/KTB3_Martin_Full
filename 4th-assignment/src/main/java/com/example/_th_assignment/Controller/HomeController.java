@@ -1,4 +1,4 @@
-package com.example._th_assignment.controller;
+package com.example._th_assignment.Controller;
 
 
 import org.springframework.stereotype.Controller;

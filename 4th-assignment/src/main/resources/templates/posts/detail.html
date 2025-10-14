@@ -25,7 +25,7 @@
         <span th:text="${comment.content}">내용</span>
         <form th:action="@{/comments/{postId}/{commentId} (postId=${post.id}, commentId=${comment.id})}"
               method="post">
-            <a th:href="@{/comments/{postId}/{id}(postId=${post.id}, id=${comment.id})}">수정 </a>
+            <a th:href="@{/comments/{postId}/{commentId}(postId=${post.id}, commentId=${comment.id})}">수정 </a>
             <input type="hidden" name="_method" value="delete">
             <button type="submit">삭제</button>
         </form>

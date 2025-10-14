@@ -1,10 +1,8 @@
-package com.example._th_assignment.controller;
+package com.example._th_assignment.ApiController;
 
-import com.example._th_assignment.dto.PostDto;
-import com.example._th_assignment.repository.PostRepository;
-import com.example._th_assignment.service.PostService;
+import com.example._th_assignment.Dto.PostDto;
+import com.example._th_assignment.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,7 +26,7 @@ public class PostApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<Object> createPost(@RequestBody PostDto postDto) {
         PostDto post;
         try{
 
@@ -39,12 +36,10 @@ public class PostApiController {
         }
 //        return new ResponseEntity<>(post, HttpStatus.OK);
         LinkedHashMap<String,Object> map = new LinkedHashMap<>();
-        map.put("Message", "Post saved successfully");
-        map.put("post", post);
+        map.put("message", "Post saved successfully");
+        map.put("data", post);
         return ResponseEntity.ok(map);
     }
-
-
 
 }
 

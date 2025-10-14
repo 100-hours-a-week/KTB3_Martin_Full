@@ -1,6 +1,6 @@
-package com.example._th_assignment.repository;
+package com.example._th_assignment.Repository;
 
-import com.example._th_assignment.dto.PostDto;
+import com.example._th_assignment.Dto.PostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;

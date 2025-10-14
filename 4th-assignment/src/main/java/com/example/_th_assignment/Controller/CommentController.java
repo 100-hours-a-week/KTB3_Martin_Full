@@ -1,18 +1,22 @@
-package com.example._th_assignment.controller;
+package com.example._th_assignment.Controller;
 
-import com.example._th_assignment.dto.CommentDto;
-import com.example._th_assignment.service.CommentService;
+import com.example._th_assignment.Dto.CommentDto;
+import com.example._th_assignment.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
-    @Autowired
-    private CommentService commentService;
 
+
+    private final CommentService commentService;
+
+    @Autowired
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
@@ -31,6 +35,9 @@ public class CommentController {
     @PutMapping("/{postId}/{commentId}")
     public String putComment(@PathVariable Long postId, @PathVariable Long commentId,
                              @ModelAttribute CommentDto commentdto) {
+//        System.out.println(commentdto.getPostid() + " " + commentdto.getId());
+//        System.out.println(commentId);
+        commentdto.setId(commentId);
         commentService.updateComment(postId, commentId, commentdto);
         return "redirect:/posts/" + postId;
     }

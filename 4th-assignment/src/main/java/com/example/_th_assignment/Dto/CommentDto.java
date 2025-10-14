@@ -1,34 +1,33 @@
-package com.example._th_assignment.dto;
+package com.example._th_assignment.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.stereotype.Component;
 
-public class PostDto {
+public class CommentDto {
     private Long id;
-    private String title;
+    private Long postid;
+//    private String author;
     private String content;
+
     @JsonIgnore
     private Boolean isdeleted = false;
 
-    public PostDto() {
+    public CommentDto() {
     }
-    public PostDto(String title, String content) {
-        id = 0L;
-        this.title = title;
+    public CommentDto(Long postID, String content) {
+        this.postid = postID;
         this.content = content;
     }
-
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getTitle() {
-        return title;
+    public Long getPostid() {
+        return postid;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPostId(Long postID) {
+        this.postid = postID;
     }
     public String getContent() {
         return content;
@@ -36,13 +35,13 @@ public class PostDto {
     public void setContent(String content) {
         this.content = content;
     }
-
     public Boolean getIsdeleted() {
         return isdeleted;
     }
     public void setIsdeleted(Boolean isdeleted) {
         this.isdeleted = isdeleted;
     }
+
 
 
 }

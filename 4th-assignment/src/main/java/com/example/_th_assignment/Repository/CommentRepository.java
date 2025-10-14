@@ -1,6 +1,6 @@
-package com.example._th_assignment.repository;
+package com.example._th_assignment.Repository;
 
-import com.example._th_assignment.dto.CommentDto;
+import com.example._th_assignment.Dto.CommentDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -15,8 +15,8 @@ public class CommentRepository {
         sequence = 0L;
 
         save(1L, new CommentDto(1L, "good"));
-        save(2L, new CommentDto(2L, "good"));
-        save(2L, new CommentDto(2L, "good"));
+        save(2L, new CommentDto(2L, "for"));
+        save(2L, new CommentDto(2L, "you"));
     }
 
     public CommentDto save(Long postId, CommentDto comment) {

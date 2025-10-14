@@ -1,9 +1,9 @@
-package com.example._th_assignment.controller;
+package com.example._th_assignment.Controller;
 
-import com.example._th_assignment.dto.CommentDto;
-import com.example._th_assignment.dto.PostDto;
-import com.example._th_assignment.service.CommentService;
-import com.example._th_assignment.service.PostService;
+import com.example._th_assignment.Dto.CommentDto;
+import com.example._th_assignment.Dto.PostDto;
+import com.example._th_assignment.Service.CommentService;
+import com.example._th_assignment.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +13,15 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 @RequestMapping("/posts")
 public class PostController {
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private CommentService commentService;
 
-    public PostController(PostService postService) {
+    private final PostService postService;
+    private final CommentService commentService;
+
+    @Autowired
+    public PostController(PostService postService, CommentService commentService) {
+
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping
@@ -44,15 +46,8 @@ public class PostController {
 
     @PostMapping
     public String savePost(@ModelAttribute PostDto postDto) {
-        try{
-            postService.savePost(postDto);
-        }catch(ResponseStatusException e){
-            System.out.println("입력자 오류 발생");
-        }finally{
-
-            return "redirect:/posts";
-        }
-
+        postService.savePost(postDto);
+        return "redirect:/posts";
     }
 
     @DeleteMapping("/{id}")
