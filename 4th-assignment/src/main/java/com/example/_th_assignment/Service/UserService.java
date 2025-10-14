@@ -28,8 +28,17 @@ public class UserService {
         return userRepository.save(userDto);
     }
 
-    public UserDto updateUser(String username, UserDto userDto) {
-        return userRepository.update(username, userDto);
+    public UserDto updateUser(String username, UserDto newuser) {
+        UserDto user = getbyName(username);
+        if(newuser.getEmail() != null)  user.setEmail(newuser.getEmail());
+        if(newuser.getNickname() != null)  user.setNickname(newuser.getNickname());
+        return userRepository.update(username, user);
+    }
+
+    public UserDto updateUserPassword(String username, UserDto newuser) {
+        UserDto user = getbyName(username);
+        if(newuser.getPassword() != null)  user.setPassword(newuser.getPassword());
+        return userRepository.update(username, user);
     }
 
 
@@ -38,5 +47,9 @@ public class UserService {
         if(!user.getPassword().equals(password))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong id or password");
         return user;
+    }
+
+    public void deleteUser(UserDto user){
+        userRepository.delete(user);
     }
 }

@@ -1,30 +1,31 @@
 package com.example._th_assignment.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserDto {
-    @NotBlank(message= "nickname should not empty" , groups = {ValidationGroup.Register.class})
+    @NotBlank(message= "nickname should not empty" ,
+            groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String nickname;
-    @NotBlank(message= "nickname should not empty" , groups = {ValidationGroup.Register.class})
+
+    @Email(message = "is not emailformat")
+    @NotBlank(message= "nickname should not empty" ,
+            groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String email;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     @NotBlank(message= "username should not empty" ,
             groups = {ValidationGroup.Login.class, ValidationGroup.Register.class})
-    private String username;
-    @NotBlank(message= "nickname should not empty" ,
-            groups = {ValidationGroup.Login.class, ValidationGroup.Register.class})
+    private final String username;
+    @NotBlank(message= "passwd should not empty" ,
+            groups = {ValidationGroup.Login.class, ValidationGroup.Register.class, ValidationGroup.UpdatePassword.class})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 
-    public UserDto() {
-    }
-
-//    public UserDto(String username, String password) {
-//        this.username = username;
-//        this.password = password;
+//    public UserDto() {
 //    }
+
 
     public UserDto(String username, String password, String email, String nickname) {
         this.username = username;
@@ -43,9 +44,6 @@ public class UserDto {
 
     public String getUsername() {
         return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
     }
     public String getPassword() {
         return password;

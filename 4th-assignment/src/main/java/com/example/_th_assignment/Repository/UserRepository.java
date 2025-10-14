@@ -23,6 +23,8 @@ public class UserRepository {
     }
 
     public UserDto save(UserDto userDto) {
+        if(userStore.containsKey(userDto.getUsername()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "same username already exists");
 
         userStore.put(userDto.getUsername(), userDto);
         return userDto;
@@ -32,8 +34,10 @@ public class UserRepository {
         return userStore.get(username);
     }
 
-    public void delete(String username) {
-        UserDto userDto = getbyName(username).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public void delete(UserDto user) {
+        String username = user.getUsername();
+        getbyName(username).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         userStore.remove(username);
 
     }
