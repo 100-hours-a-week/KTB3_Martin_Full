@@ -1,11 +1,12 @@
 package com.example._th_assignment.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class CommentDto {
     private Long id;
     private Long postid;
-//    private String author;
+    private String author = "unknown";
     private String content;
 
     @JsonIgnore
@@ -35,6 +36,14 @@ public class CommentDto {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public Boolean getIsdeleted() {
         return isdeleted;
     }

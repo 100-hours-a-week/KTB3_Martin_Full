@@ -1,16 +1,24 @@
 package com.example._th_assignment.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotBlank;
 
 public class PostDto {
 
+    @JsonView({JsonViewGroup.summaryview.class})
     private Long id;
-    @NotBlank(message = "title should not empty")
+
+    @JsonView({JsonViewGroup.summaryview.class})
+    @NotBlank(message = "title should not empty", groups = {ValidationGroup.Postnewpost.class})
     private String title;
-    @NotBlank(message = "contect should not empty")
+
+    @NotBlank(message = "content should not empty", groups = {ValidationGroup.Postnewpost.class})
     private String content;
+
+    @JsonView({JsonViewGroup.summaryview.class})
     private String author = "unknown";
+
     @JsonIgnore
     private Boolean isdeleted = false;
 

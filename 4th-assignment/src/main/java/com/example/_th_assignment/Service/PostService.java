@@ -1,7 +1,10 @@
 package com.example._th_assignment.Service;
 
 import com.example._th_assignment.Dto.PostDto;
+import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Repository.PostRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,14 +28,10 @@ public class PostService {
     }
 
     public PostDto getPost(long id) {
-        return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"is not here"));
+        return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," post not found"));
     }
 
-    public PostDto savePost(PostDto postDto)throws ResponseStatusException {
-        if(postDto.getTitle() == null||postDto.getTitle().equals("")||
-        postDto.getContent() == null || postDto.getContent().equals("")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public PostDto savePost(PostDto postDto){
         return postRepository.save(postDto);
     }
 
@@ -42,6 +41,15 @@ public class PostService {
 
     public PostDto updatePost(Long id, PostDto postDto) {
         return postRepository.update(id, postDto);
+    }
+
+    public PostDto updatePostAuthor(PostDto postDto, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            UserDto user = (UserDto) session.getAttribute("user");
+            postDto.setAuthor(user.getNickname());
+        }
+        return postDto;
     }
 
 

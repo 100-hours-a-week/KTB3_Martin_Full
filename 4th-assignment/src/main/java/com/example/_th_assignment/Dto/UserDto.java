@@ -9,22 +9,22 @@ public class UserDto {
             groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String nickname;
 
-    @Email(message = "is not emailformat")
+    @Email(message = "malformed email")
     @NotBlank(message= "nickname should not empty" ,
             groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String email;
 
     @NotBlank(message= "username should not empty" ,
             groups = {ValidationGroup.Login.class, ValidationGroup.Register.class})
-    private final String username;
+    private  String username;
     @NotBlank(message= "passwd should not empty" ,
             groups = {ValidationGroup.Login.class, ValidationGroup.Register.class, ValidationGroup.UpdatePassword.class})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 
-//    public UserDto() {
-//    }
+    public UserDto() {
+    }
 
 
     public UserDto(String username, String password, String email, String nickname) {

@@ -19,11 +19,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController {
-    @Autowired
-    private UserService userService;
 
+    private final UserService userService;
+
+    @Autowired
     public UserApiController (UserService userService) {
         this.userService = userService;
+
     }
     @PostMapping("auth/login-session")
     public ResponseEntity<Map<String, Object>> login(
