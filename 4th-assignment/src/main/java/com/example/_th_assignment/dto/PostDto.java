@@ -1,11 +1,13 @@
 package com.example._th_assignment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 public class PostDto {
     private Long id;
     private String title;
     private String content;
+    @JsonIgnore
     private Boolean isdeleted = false;
 
     public PostDto() {

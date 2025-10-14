@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Repository
 public class PostRepository {
-    private final HashMap<Long, PostDto> postmap;
+    private final HashMap<Long, PostDto> postStore;
 
     private long sequence;
 
     public PostRepository() {
-        postmap = new HashMap<>();
+        postStore = new HashMap<>();
         sequence = 0L;
 
         save(new PostDto("내가 어제 먹은것", "감자"));
@@ -28,23 +28,23 @@ public class PostRepository {
 
     public List<PostDto> getAllList(){
         ArrayList<PostDto> list = new ArrayList<>();
-        for(PostDto post : postmap.values()){
+        for(PostDto post : postStore.values()){
             if(!post.getIsdeleted()) list.add(post);
         }
         return list;
     }
     public Optional<PostDto> getbyId(long id) {
-        return Optional.ofNullable(postmap.get(id)).filter(post -> !post.getIsdeleted());
+        return Optional.ofNullable(postStore.get(id)).filter(post -> !post.getIsdeleted());
     }
 
     public PostDto save(PostDto postDto) {
         postDto.setId(++sequence);
-        postmap.put(sequence, postDto);
+        postStore.put(sequence, postDto);
         return postDto;
     }
     public PostDto update(Long id, PostDto postDto) {
-        postmap.replace(id, postDto);
-        return postmap.get(id);
+        postStore.replace(id, postDto);
+        return postStore.get(id);
     }
 
     public void delete(long id) {

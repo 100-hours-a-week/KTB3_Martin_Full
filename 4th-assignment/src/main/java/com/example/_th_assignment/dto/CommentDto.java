@@ -1,10 +1,14 @@
 package com.example._th_assignment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CommentDto {
     private Long id;
     private Long postid;
 //    private String author;
     private String content;
+
+    @JsonIgnore
     private Boolean isdeleted = false;
 
     public CommentDto() {

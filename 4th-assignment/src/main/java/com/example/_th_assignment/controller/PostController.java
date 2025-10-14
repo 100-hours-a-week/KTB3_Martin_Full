@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/posts")
@@ -43,8 +44,14 @@ public class PostController {
 
     @PostMapping
     public String savePost(@ModelAttribute PostDto postDto) {
-        postService.savePost(postDto);
-        return "redirect:/posts";
+        try{
+            postService.savePost(postDto);
+        }catch(ResponseStatusException e){
+            System.out.println("입력자 오류 발생");
+        }finally{
+
+            return "redirect:/posts";
+        }
 
     }
 

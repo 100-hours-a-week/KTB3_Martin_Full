@@ -27,7 +27,11 @@ public class PostService {
         return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public PostDto savePost(PostDto postDto) {
+    public PostDto savePost(PostDto postDto)throws ResponseStatusException {
+        if(postDto.getTitle() == null||postDto.getTitle().equals("")||
+        postDto.getContent() == null || postDto.getContent().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         return postRepository.save(postDto);
     }
 
