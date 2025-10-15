@@ -1,19 +1,21 @@
 package com.example._th_assignment.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class LikeDto {
     private String author = "unknown";
     private Long postid;
     private String authorEmail;
 
 
-
+    @JsonIgnore
     private Boolean isdeleted = false;
 
     public LikeDto() {
     }
-    public LikeDto(Long postid, String author) {
+    public LikeDto(Long postid, String authorEmail) {
         this.postid = postid;
-        this.author = author;
+        this.authorEmail = authorEmail;
     }
 
     public String getAuthor() {
