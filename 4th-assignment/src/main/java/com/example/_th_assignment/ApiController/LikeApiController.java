@@ -70,6 +70,20 @@ public class LikeApiController {
 
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/{postId}")
+    public ResponseEntity<Map<String, Object>> updateLike(@PathVariable Long postId, HttpServletRequest request) {
+        sessionManager.access2Resource(request);
+        UserDto user = (UserDto) request.getSession().getAttribute("user");
+
+        LikeDto like = likeService.getbyPostIdAndAuthorEmail(postId, user.getEmail());
+        like.setAuthor(user.getNickname());
+        like = likeService.updateLike(postId,user.getEmail(), like);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("message", "update like success");
+        response.put("like", like);
+        return ResponseEntity.ok(response);
+    }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<Map<String, Object>> deleteLike(@PathVariable Long postId, HttpServletRequest request) {

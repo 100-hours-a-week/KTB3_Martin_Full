@@ -7,19 +7,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class PostRepository {
-    private final HashMap<Long, PostDto> postStore;
+    private final LinkedHashMap<Long, PostDto> postStore;
 
     private long sequence;
 
     public PostRepository() {
-        postStore = new HashMap<>();
+        postStore = new LinkedHashMap<>();
         sequence = 0L;
 
         save(new PostDto("foo@bar","내가 어제 먹은것", "감자"));
@@ -44,7 +41,7 @@ public class PostRepository {
         String timeStamp = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss"));
         postDto.setBirthtime(timeStamp);
-        postStore.put(sequence, postDto);
+        postStore.putFirst(sequence, postDto);
         return postDto;
     }
     public PostDto update(Long id, PostDto postDto) {
