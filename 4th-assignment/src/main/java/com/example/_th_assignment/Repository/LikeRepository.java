@@ -42,7 +42,7 @@ public class LikeRepository {
     public LikeDto save(Long postId, LikeDto like){
         Map<String, LikeDto> map = likeStore.computeIfAbsent(postId, v -> new LinkedHashMap<>());
         if(map.containsKey(like.getAuthorEmail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "1 post, 1 user, 1 like");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "1 post, 1 user, 1 like");
         }
         like.setPostid(postId);
         map.put(like.getAuthorEmail(), like);

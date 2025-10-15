@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +73,13 @@ public class CommentAPiController {
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();
         response.put("message", "save comment success");
         response.put("comment",comment);
-        return ResponseEntity.ok(response);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{postid}/{id}")
+                .buildAndExpand(comment.getPostid(), comment.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(response);
     }
 
     @PutMapping("/{postid}/{id}")

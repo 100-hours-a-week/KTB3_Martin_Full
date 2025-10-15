@@ -11,16 +11,18 @@ public class SessionManager {
     public SessionManager() {
     }
 
-    public void access2Auth(HttpServletRequest request) {
+    public HttpSession access2Auth(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Session is null");
         }
+        return session;
     }
-    public void access2Resource(HttpServletRequest request) {
+    public HttpSession access2Resource(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unlogged in");
         }
+        return session;
     }
 }

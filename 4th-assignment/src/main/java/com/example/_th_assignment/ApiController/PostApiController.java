@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -76,8 +78,8 @@ public class PostApiController {
     @PostMapping
     public ResponseEntity<Map<String,Object>> postPost(
             @Valid @RequestBody RequestPostDto requestPostDto, HttpServletRequest request){
-        sessionManager.access2Auth(request);
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
+        HttpSession session = sessionManager.access2Auth(request);
+        UserDto user = (UserDto) session.getAttribute("user");
 
         PostDto post = postService.apply2PostDto(requestPostDto, new PostDto(user.getEmail()));
         post.setAuthor(user.getNickname());
@@ -87,7 +89,14 @@ public class PostApiController {
         response.put("message", "save post success");
         response.put("post",post);
 
-        return ResponseEntity.ok(response);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(response);
+
     }
 
     @PutMapping("/{id}")

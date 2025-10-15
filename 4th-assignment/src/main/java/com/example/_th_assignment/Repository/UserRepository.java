@@ -24,14 +24,28 @@ public class UserRepository {
 
     public UserDto save(UserDto userDto) {
         if(userStore.containsKey(userDto.getEmail()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "same email already exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "same email already exists");
 
         userStore.put(userDto.getEmail(), userDto);
         return userDto;
     }
-    public UserDto update(String email, UserDto user) {
-        getbyEmail(email).orElseThrow(()->
+    public UserDto update(String email, UserDto updateuser) {
+        UserDto user =getbyEmail(email).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        user.setNickname(updateuser.getNickname());
+        user.setImage(updateuser.getImage());
+
+        userStore.replace(email, user);
+        return userStore.get(email);
+    }
+
+    public UserDto updatePassword(String email, UserDto newuser) {
+        UserDto user =getbyEmail(email).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        user.setPassword(newuser.getPassword());
+
         userStore.replace(email, user);
         return userStore.get(email);
     }

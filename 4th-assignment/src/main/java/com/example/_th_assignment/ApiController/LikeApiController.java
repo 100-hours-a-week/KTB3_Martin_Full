@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,7 +70,9 @@ public class LikeApiController {
         response.put("message", "save like success");
         response.put("like", like);
 
-        return ResponseEntity.ok(response);
+        URI location = URI.create("/likes/" + postId + "?user=" + like.getAuthorEmail());
+
+        return ResponseEntity.created(location).body(response);
     }
     @PutMapping("/{postId}")
     public ResponseEntity<Map<String, Object>> updateLike(@PathVariable Long postId, HttpServletRequest request) {

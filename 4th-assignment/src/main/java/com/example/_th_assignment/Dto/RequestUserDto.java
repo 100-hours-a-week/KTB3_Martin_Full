@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class UserRequestDto {
-    @NotBlank(message= "nickname should not empty",groups = {ValidationGroup.Register.class})
+public class RequestUserDto {
+    @NotBlank(message= "nickname should not empty",groups = {
+            ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String nickname;
 
     @Email(message = "malformed email", groups = {ValidationGroup.Register.class})
-    @NotBlank(message= "nickname should not empty",groups = {ValidationGroup.Register.class})
+    @NotBlank(message= "nickname should not empty",
+            groups = {ValidationGroup.Register.class})
     private String email;
 
     @NotBlank(message= "passwd should not empty" ,
@@ -23,14 +25,17 @@ public class UserRequestDto {
             groups = {ValidationGroup.UpdatePassword.class, ValidationGroup.Register.class})
     private String password;
 
-    @NotBlank(message = "image should not empty", groups = {ValidationGroup.Register.class})
+    @NotBlank(message = "image should not empty",
+            groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String image = "";
 
+    @NotBlank(message= "checkingpasswd should not empty" ,
+            groups = {ValidationGroup.UpdatePassword.class, ValidationGroup.Register.class})
     private String checkingpassword = "";
 
-    public UserRequestDto() {}
+    public RequestUserDto() {}
 
-    public UserRequestDto(String nickname, String email, String password, String checkingpassword, String image) {
+    public RequestUserDto(String nickname, String email, String password, String checkingpassword, String image) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;

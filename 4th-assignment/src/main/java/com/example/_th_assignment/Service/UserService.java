@@ -1,6 +1,6 @@
 package com.example._th_assignment.Service;
 
-import com.example._th_assignment.Dto.UserRequestDto;
+import com.example._th_assignment.Dto.RequestUserDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,11 @@ public class UserService {
     }
 
     public UserDto updateUser(String useremail, UserDto newuser) {
-        UserDto user = getbyEmail(useremail);
-        if(newuser.getNickname() != null)  user.setNickname(newuser.getNickname());
-        return userRepository.update(useremail, user);
+        return userRepository.update(useremail, newuser);
     }
 
     public UserDto updateUserPassword(String useremail, UserDto newuser) {
-        UserDto user = getbyEmail(useremail);
-        if(newuser.getPassword() != null)  user.setPassword(newuser.getPassword());
-        return userRepository.update(useremail, user);
+        return userRepository.updatePassword(useremail, newuser);
     }
 
 
@@ -48,7 +44,7 @@ public class UserService {
     public void deleteUser(UserDto user){
         userRepository.delete(user);
     }
-    public UserDto apply2UserDto(UserRequestDto userRequestDto) {
-        return new UserDto(userRequestDto);
+    public UserDto apply2UserDto(RequestUserDto requestUserDto) {
+        return new UserDto(requestUserDto);
     }
 }

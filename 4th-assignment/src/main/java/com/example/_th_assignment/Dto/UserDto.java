@@ -1,7 +1,6 @@
 package com.example._th_assignment.Dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserDto {
@@ -25,7 +24,7 @@ public class UserDto {
 
 
 
-    public UserDto(UserRequestDto registerUser) {
+    public UserDto(RequestUserDto registerUser) {
         this.nickname = registerUser.getNickname();
         this.email = registerUser.getEmail();
         this.password = registerUser.getPassword();
