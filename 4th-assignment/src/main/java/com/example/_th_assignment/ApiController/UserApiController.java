@@ -80,7 +80,7 @@ public class UserApiController {
     }
     @GetMapping
     public ResponseEntity<Map<String, Object>> getUserProperty(HttpServletRequest request) {
-        sessionManager.acess2User(request);
+        sessionManager.access2Auth(request);
         HttpSession session = request.getSession(false);
         UserDto user = (UserDto) session.getAttribute("user");
 
@@ -95,7 +95,7 @@ public class UserApiController {
     public ResponseEntity<Map<String, Object>> updateUser(
             @Validated(ValidationGroup.UpdateProperty.class ) @RequestBody UserDto user,
             HttpServletRequest request) {
-        sessionManager.acess2User(request);
+        sessionManager.access2Auth(request);
         HttpSession session = request.getSession(false);
         UserDto previousUser = (UserDto) session.getAttribute("user");
 //        if(user.getEmail() != null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email can't be changed");
@@ -119,7 +119,7 @@ public class UserApiController {
             @Validated(ValidationGroup.UpdatePassword.class) @RequestBody UserRequestDto user,
             HttpServletRequest request
     ){
-        sessionManager.acess2User(request);
+        sessionManager.access2Auth(request);
         HttpSession session = request.getSession(false);
         UserDto previousUser = (UserDto) session.getAttribute("user");
 //        if(user.getEmail() != null)
@@ -141,7 +141,7 @@ public class UserApiController {
 
     @DeleteMapping
     public ResponseEntity<Map<String, Object>> deleteUser(HttpServletRequest request) {
-        sessionManager.acess2User(request);
+        sessionManager.access2Auth(request);
         HttpSession session = request.getSession(false);
 
         UserDto user = (UserDto) session.getAttribute("user");

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public class PostDto {
 
-    @JsonIgnore
+
     private Long id;
     @JsonIgnore
     private String authorEmail;
@@ -22,8 +22,8 @@ public class PostDto {
     private String content;
 
     private String author = "unknown";
-    private int view;
-    private String birthtime;
+    private int view = 0;
+    private String birthtime ="";
 
     private String image = "";
 

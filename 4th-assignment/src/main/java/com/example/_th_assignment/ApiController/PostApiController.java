@@ -59,24 +59,24 @@ public class PostApiController {
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getPost(@PathVariable long id, HttpServletRequest request) {
         sessionManager.access2Resource(request);
-        Map <String,Object> map = new LinkedHashMap<>();
         PostDto post = postService.getPost(id);
         post.setView(post.getView()+1);
         List<CommentDto> comments = commentService.getByPostId(id);
         List<LikeDto> likes = likeService.getbyPostId(id);
 
+        Map <String,Object> map = new LinkedHashMap<>();
         map.put("post",postService.apply2ResponseDto(post,comments.size(),likes.size()));
         map.put("comments", commentService.getByPostId(id));
 
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();
         response.put("message", "get post/"+id+ " success");
-        response.put("post",post);
+        response.put("post",map);
         return ResponseEntity.ok(response);
     }
     @PostMapping
     public ResponseEntity<Map<String,Object>> postPost(
             @Valid @RequestBody RequestPostDto requestPostDto, HttpServletRequest request){
-        sessionManager.access2Resource(request);
+        sessionManager.access2Auth(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
         PostDto post = postService.apply2PostDto(requestPostDto, new PostDto(user.getEmail()));

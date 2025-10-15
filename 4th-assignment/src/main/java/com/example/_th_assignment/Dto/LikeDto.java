@@ -1,12 +1,13 @@
 package com.example._th_assignment.Dto;
 
 public class LikeDto {
-    private String author;
+    private String author = "unknown";
     private Long postid;
-    private Long id;
+    private String authorEmail;
+
+
 
     private Boolean isdeleted = false;
-    public LikeDto(String author, Long postid, Long id, Boolean isdelete){}
 
     public LikeDto() {
     }
@@ -14,6 +15,7 @@ public class LikeDto {
         this.postid = postid;
         this.author = author;
     }
+
     public String getAuthor() {
         return author;
     }
@@ -26,15 +28,17 @@ public class LikeDto {
     public void setPostid(Long postid) {
         this.postid = postid;
     }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {this.id = id;}
     public Boolean getIsdeleted() {
         return isdeleted;
     }
     public void setIsdeleted(Boolean isdeleted) {
         this.isdeleted = isdeleted;
+    }
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
     }
 
 }

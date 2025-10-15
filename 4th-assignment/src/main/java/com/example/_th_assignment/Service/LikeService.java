@@ -21,23 +21,22 @@ public class LikeService {
     public List<LikeDto> getbyPostId(Long postId){
         return likeRepository.getbyPostId(postId);
     }
-    public LikeDto getbyPostIdAndAuthor(Long postId, String author){
-        LikeDto like= likeRepository.getbyPostIdAndAuthor(postId, author).
+    public LikeDto getbyPostIdAndAuthorEmail(Long postId, String authorEmail){
+        return likeRepository.getbyPostIdAndAuthorEmail(postId, authorEmail).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "like not found"));
 
-        return like;
     }
 
     public LikeDto saveLike(Long postid, LikeDto likeDto){
         return likeRepository.save(postid, likeDto);
     }
 
-    public LikeDto updateLike(Long postid, String author, LikeDto likeDto){
-        return likeRepository.update(postid, author, likeDto);
+    public LikeDto updateLike(Long postid, String authorEmail, LikeDto likeDto){
+        return likeRepository.update(postid, authorEmail, likeDto);
     }
 
-    public void deleteLike(Long postid, String author){
-        likeRepository.delete(postid, author);
+    public void deleteLike(Long postid, String authorEmailEmail){
+        likeRepository.delete(postid, authorEmailEmail);
     }
 
     public void deleteAllLike(Long postid){

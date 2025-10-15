@@ -11,7 +11,7 @@ public class SessionManager {
     public SessionManager() {
     }
 
-    public void acess2User(HttpServletRequest request) {
+    public void access2Auth(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Session is null");

@@ -12,15 +12,14 @@ import java.util.*;
 @Repository
 public class LikeRepository {
 
-    private Long sequence = 0L;
     private final HashMap<Long, LinkedHashMap<String, LikeDto>> likeStore;
 
     public LikeRepository() {
         this.likeStore = new LinkedHashMap<>();
 
-        save(1L, new LikeDto(1L, "Hiccup"));
-        save(2L, new LikeDto(2L, "Stoick"));
-        save(2L, new LikeDto(2L, "Valka"));
+        save(1L, new LikeDto(1L, "foo@bar"));
+        save(2L, new LikeDto(2L, "foo@bar"));
+        save(3L, new LikeDto(3L, "foo@bar"));
     }
 
     public List<LikeDto> getbyPostId(long postId) {
@@ -33,7 +32,7 @@ public class LikeRepository {
         return likes;
     }
 
-    public Optional<LikeDto> getbyPostIdAndAuthor(long postId, String author){
+    public Optional<LikeDto> getbyPostIdAndAuthorEmail(long postId, String author){
         LinkedHashMap<String, LikeDto> likeMap = likeStore.get(postId);
         if(likeMap == null) return Optional.empty();
 
@@ -41,22 +40,24 @@ public class LikeRepository {
     }
 
     public LikeDto save(Long postId, LikeDto like){
-        like.setId(++sequence);
+        Map<String, LikeDto> map = likeStore.computeIfAbsent(postId, v -> new LinkedHashMap<>());
+        if(map.containsKey(like.getAuthorEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "1 post, 1 user, 1 like");
+        }
         like.setPostid(postId);
-        likeStore.computeIfAbsent(postId, v -> new LinkedHashMap<>()).put(like.getAuthor(), like);
+        map.put(like.getAuthorEmail(), like);
         return like;
     }
 
-    public LikeDto update(Long postId, String author, LikeDto newlike) {
-        getbyPostIdAndAuthor(postId, author).
+    public LikeDto update(Long postId, String authorEmail, LikeDto newlike) {
+        getbyPostIdAndAuthorEmail(postId, authorEmail).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "like not found"));
         Map<String, LikeDto> likeMap = likeStore.get(postId);
-        likeMap.replace(author, newlike);
-        return likeMap.get(author);
+        likeMap.replace(authorEmail, newlike);
+        return likeMap.get(authorEmail);
     }
-
-    public void delete(Long postId, String author){
-        LikeDto like = getbyPostIdAndAuthor(postId, author).
+    public void delete(Long postId, String authorEmail){
+        LikeDto like = getbyPostIdAndAuthorEmail(postId, authorEmail).
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "like not found"));
         like.setIsdeleted(true);
     }

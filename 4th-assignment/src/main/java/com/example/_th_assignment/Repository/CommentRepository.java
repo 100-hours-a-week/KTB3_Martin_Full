@@ -5,28 +5,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Repository
 public class CommentRepository {
-    private Long sequence;
+//    private Long sequence;
     private final HashMap<Long, LinkedHashMap<Long, CommentDto>> commentStore;
+    private final HashMap<Long, Long> sequencemap;
 
     public CommentRepository() {
         commentStore = new LinkedHashMap<>();
-        sequence = 0L;
+        sequencemap = new HashMap<>();
 
-        save(1L, new CommentDto(1L, "good"));
-        save(2L, new CommentDto(2L, "for"));
-        save(2L, new CommentDto(2L, "you"));
+
+        save(1L, new CommentDto(1L, "good", "foo@bar"));
+        save(2L, new CommentDto(2L, "for", "foo@bar"));
+        save(2L, new CommentDto(2L, "you", "foo@bar"));
     }
 
     public CommentDto save(Long postId, CommentDto comment) {
-        comment.setId(++sequence);
+        Long sequence = sequencemap.compute(postId, (k, v) -> (v == null) ? 1 : v + 1);
+
+        comment.setId(sequence);
         comment.setPostId(postId);
+        String timeStamp = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss"));
+        comment.setBirthTime(timeStamp);
         commentStore.computeIfAbsent(postId, k -> new LinkedHashMap<>())
                 .put(sequence, comment);
-
         return comment;
     }
 

@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Size;
 public class RequestPostDto {
 
     @Size(min = 1, max = 26, message = "title is not more than 25")
-    @NotBlank(message = "title should not empty")
+    @NotBlank(message = "post title should not empty")
     private String title;
 
-    @NotBlank(message = "content should not empty")
+    @NotBlank(message = "post content should not empty")
     private String content;
 
     private String image;
