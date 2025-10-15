@@ -1,7 +1,9 @@
 package com.example._th_assignment.Repository;
 
 import com.example._th_assignment.Dto.CommentDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -11,7 +13,7 @@ public class CommentRepository {
     private final HashMap<Long, LinkedHashMap<Long, CommentDto>> commentStore;
 
     public CommentRepository() {
-        commentStore = new HashMap<>();
+        commentStore = new LinkedHashMap<>();
         sequence = 0L;
 
         save(1L, new CommentDto(1L, "good"));
@@ -48,24 +50,32 @@ public class CommentRepository {
         if (comments == null) {
             return Optional.empty();
         }
-
-        CommentDto comment = comments.get(commentId);
-        return Optional.ofNullable(comment).filter(c ->!comment.getIsdeleted());
+        return Optional.ofNullable(comments.get(commentId)).filter(c ->!c.getIsdeleted());
     }
 
+
+    public CommentDto update(Long postId, Long commentId, CommentDto newcomment) {
+        getbyPostIdAndCommentId(postId,commentId).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "comment not found"));
+        LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
+        comments.replace(commentId,  newcomment);
+        return comments.get(newcomment.getId());
+    }
 
 
     public void delete(Long postId, Long commentId) {
-        HashMap<Long, CommentDto> comments = commentStore.get(postId);
-        if (comments != null) {
-            comments.get(commentId).setIsdeleted(true);
-        }
+        CommentDto comment = getbyPostIdAndCommentId(postId, commentId).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "comment not found"));
+        comment.setIsdeleted(true);
+
     }
 
-    public CommentDto update(Long postId, Long commentId, CommentDto commentDto) {
-        HashMap<Long, CommentDto> comments = commentStore.get(postId);
-        comments.replace(commentId,  commentDto);
-        return comments.get(commentDto.getId());
+    public void delete(Long postId) {
+        if(!commentStore.containsKey(postId)) return;
+        LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
+        for(CommentDto comment : comments.values()) {
+            comment.setIsdeleted(true);
+        }
     }
 
 

@@ -1,0 +1,59 @@
+package com.example._th_assignment.Dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+public class UserRequestDto {
+    @NotBlank(message= "nickname should not empty",groups = {ValidationGroup.Register.class})
+    private String nickname;
+
+    @Email(message = "malformed email", groups = {ValidationGroup.Register.class})
+    @NotBlank(message= "nickname should not empty",groups = {ValidationGroup.Register.class})
+    private String email;
+
+    @NotBlank(message= "passwd should not empty" ,
+            groups = {ValidationGroup.UpdatePassword.class, ValidationGroup.Register.class})
+    @Size(min = 8, max = 20, message = "Passwords are not less than 8 and not more than 20 characters",
+            groups = {ValidationGroup.UpdatePassword.class, ValidationGroup.Register.class})
+
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}\\[\\]:;\"'<>,.?/]).+$",
+            message = "비밀번호는 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다.",
+            groups = {ValidationGroup.UpdatePassword.class, ValidationGroup.Register.class})
+    private String password;
+
+    @NotBlank(message = "image should not empty", groups = {ValidationGroup.Register.class})
+    private String image = "";
+
+    private String checkingpassword = "";
+
+    public UserRequestDto() {}
+
+    public UserRequestDto(String nickname, String email, String password, String checkingpassword, String image) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.checkingpassword = checkingpassword;
+        this.image = image;
+
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getCheckingpassword() {
+        return checkingpassword;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getImage() {
+        return image;
+    }
+
+}

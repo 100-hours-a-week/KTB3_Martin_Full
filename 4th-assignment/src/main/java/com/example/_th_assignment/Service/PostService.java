@@ -1,6 +1,8 @@
 package com.example._th_assignment.Service;
 
 import com.example._th_assignment.Dto.PostDto;
+import com.example._th_assignment.Dto.RequestPostDto;
+import com.example._th_assignment.Dto.ResponsePostDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Repository.PostRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +26,13 @@ public class PostService {
     }
 
     public List<PostDto> getAllPosts() {
-        return postRepository.getAllList();
+        return postRepository.getAllPosts();
     }
 
     public PostDto getPost(long id) {
-        return postRepository.getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND," post not found"));
+        PostDto post =  postRepository.getbyId(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Post not found "));
+        return post;
     }
 
     public PostDto savePost(PostDto postDto){
@@ -49,6 +53,20 @@ public class PostService {
             UserDto user = (UserDto) session.getAttribute("user");
             postDto.setAuthor(user.getNickname());
         }
+        return postDto;
+    }
+
+    public ResponsePostDto apply2ResponseDto(PostDto postDto, int commentnum, int likenum) {
+        return new ResponsePostDto(postDto, commentnum, likenum);
+    }
+
+    public PostDto apply2PostDto(RequestPostDto requestPostDto, PostDto postDto) {
+        postDto.setTitle(requestPostDto.getTitle());
+        postDto.setContent(requestPostDto.getContent());
+        if(requestPostDto.getImage()!=null){
+            postDto.setImage(requestPostDto.getImage());
+        }
+
         return postDto;
     }
 

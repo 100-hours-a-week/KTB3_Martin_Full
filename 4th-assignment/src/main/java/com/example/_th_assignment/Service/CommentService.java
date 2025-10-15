@@ -26,7 +26,7 @@ public class CommentService {
 
     public CommentDto getByPostIdAndCommentId(Long postId, Long commentId) {
         return commentRepository.getbyPostIdAndCommentId(postId, commentId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"comment not found"));
     }
 
     public CommentDto saveComment(Long postId, CommentDto commentDto) {
@@ -34,12 +34,16 @@ public class CommentService {
         return commentRepository.save(postId, commentDto);
     }
 
+    public CommentDto updateComment(Long postId, Long commentId, CommentDto commentDto) {
+        return commentRepository.update(postId, commentId, commentDto);
+    }
+
     public void deleteComment(Long postId, Long commentId) {
         commentRepository.delete(postId, commentId);
     }
 
-    public CommentDto updateComment(Long postId, Long commentId, CommentDto commentDto) {
-        return commentRepository.update(postId, commentId, commentDto);
+    public void deleteAllComment(Long postId) {
+        commentRepository.delete(postId);
     }
 
 }

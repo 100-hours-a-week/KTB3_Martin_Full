@@ -1,5 +1,6 @@
 package com.example._th_assignment.Service;
 
+import com.example._th_assignment.Dto.UserRequestDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +17,29 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto getbyName(String name) {
-        return userRepository.getbyName(name)
+    public UserDto getbyEmail(String name) {
+        return userRepository.getbyEmail(name)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong id or password"));
     }
     public UserDto saveUser (UserDto userDto){
-//        if(userDto.getUsername() == null||userDto.getUsername().equals("")||
-//                userDto.getPassword() == null || userDto.getPassword().equals("")) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name or passwd should not empty");
-//        }
         return userRepository.save(userDto);
     }
 
-    public UserDto updateUser(String username, UserDto newuser) {
-        UserDto user = getbyName(username);
-        if(newuser.getEmail() != null)  user.setEmail(newuser.getEmail());
+    public UserDto updateUser(String useremail, UserDto newuser) {
+        UserDto user = getbyEmail(useremail);
         if(newuser.getNickname() != null)  user.setNickname(newuser.getNickname());
-        return userRepository.update(username, user);
+        return userRepository.update(useremail, user);
     }
 
-    public UserDto updateUserPassword(String username, UserDto newuser) {
-        UserDto user = getbyName(username);
+    public UserDto updateUserPassword(String useremail, UserDto newuser) {
+        UserDto user = getbyEmail(useremail);
         if(newuser.getPassword() != null)  user.setPassword(newuser.getPassword());
-        return userRepository.update(username, user);
+        return userRepository.update(useremail, user);
     }
 
 
     public UserDto checkUser(String username, String password) {
-        UserDto user = getbyName(username);
+        UserDto user = getbyEmail(username);
         if(!user.getPassword().equals(password))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong id or password");
         return user;
@@ -51,5 +47,8 @@ public class UserService {
 
     public void deleteUser(UserDto user){
         userRepository.delete(user);
+    }
+    public UserDto apply2UserDto(UserRequestDto userRequestDto) {
+        return new UserDto(userRequestDto);
     }
 }

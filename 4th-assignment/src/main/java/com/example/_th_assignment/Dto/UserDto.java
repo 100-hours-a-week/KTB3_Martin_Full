@@ -5,30 +5,38 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserDto {
-    @NotBlank(message= "nickname should not empty" ,
-            groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
     private String nickname;
 
-    @Email(message = "malformed email")
+
     @NotBlank(message= "nickname should not empty" ,
-            groups = {ValidationGroup.Register.class, ValidationGroup.UpdateProperty.class})
+            groups = {ValidationGroup.Login.class})
     private String email;
 
-    @NotBlank(message= "username should not empty" ,
-            groups = {ValidationGroup.Login.class, ValidationGroup.Register.class})
-    private  String username;
     @NotBlank(message= "passwd should not empty" ,
-            groups = {ValidationGroup.Login.class, ValidationGroup.Register.class, ValidationGroup.UpdatePassword.class})
+            groups = {ValidationGroup.Login.class})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private String image = "";
 
     public UserDto() {
+
     }
 
 
-    public UserDto(String username, String password, String email, String nickname) {
-        this.username = username;
+
+    public UserDto(UserRequestDto registerUser) {
+        this.nickname = registerUser.getNickname();
+        this.email = registerUser.getEmail();
+        this.password = registerUser.getPassword();
+        if(registerUser.getImage()!=null) {
+            this.image = registerUser.getImage();
+        }
+    }
+
+
+    public UserDto( String password, String email, String nickname) {
+
         this.password = password;
         this.email = email;
         this.nickname = nickname;
@@ -42,9 +50,6 @@ public class UserDto {
     }
 
 
-    public String getUsername() {
-        return username;
-    }
     public String getPassword() {
         return password;
     }
@@ -54,8 +59,14 @@ public class UserDto {
     public String getEmail() {
         return email;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    public String getImage() {
+        return image;
     }
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
 
 }

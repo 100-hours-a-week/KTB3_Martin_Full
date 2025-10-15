@@ -14,31 +14,33 @@ public class UserRepository {
 
     public UserRepository() {
         userStore = new HashMap<>();
-        UserDto user = new UserDto("myid", "mypassword", "foo@bar", "dummy");
+        UserDto user = new UserDto("Mypassword1!", "foo@bar", "dummy");
         save(user);
     }
 
-    public Optional<UserDto> getbyName(String username) {
-        return Optional.ofNullable(userStore.get(username));
+    public Optional<UserDto> getbyEmail(String useremail) {
+        return Optional.ofNullable(userStore.get(useremail));
     }
 
     public UserDto save(UserDto userDto) {
-        if(userStore.containsKey(userDto.getUsername()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "same username already exists");
+        if(userStore.containsKey(userDto.getEmail()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "same email already exists");
 
-        userStore.put(userDto.getUsername(), userDto);
+        userStore.put(userDto.getEmail(), userDto);
         return userDto;
     }
-    public UserDto update(String username, UserDto user) {
-        userStore.replace(username, user);
-        return userStore.get(username);
+    public UserDto update(String email, UserDto user) {
+        getbyEmail(email).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        userStore.replace(email, user);
+        return userStore.get(email);
     }
 
     public void delete(UserDto user) {
-        String username = user.getUsername();
-        getbyName(username).orElseThrow(()->
+        String email = user.getEmail();
+        getbyEmail(email).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        userStore.remove(username);
+        userStore.remove(email);
 
     }
 

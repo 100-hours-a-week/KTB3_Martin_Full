@@ -3,29 +3,43 @@ package com.example._th_assignment.Dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class PostDto {
 
-    @JsonView({JsonViewGroup.summaryview.class})
+    @JsonIgnore
     private Long id;
+    @JsonIgnore
+    private String authorEmail;
 
-    @JsonView({JsonViewGroup.summaryview.class})
-    @NotBlank(message = "title should not empty", groups = {ValidationGroup.Postnewpost.class})
+
+//    @Size(min = 1, max = 26, message = "title is not more than 25",
+//            groups = {ValidationGroup.Postnewpost.class})
+//    @NotBlank(message = "title should not empty", groups = {ValidationGroup.Postnewpost.class})
     private String title;
 
-    @NotBlank(message = "content should not empty", groups = {ValidationGroup.Postnewpost.class})
+//    @NotBlank(message = "content should not empty", groups = {ValidationGroup.Postnewpost.class})
     private String content;
 
-    @JsonView({JsonViewGroup.summaryview.class})
     private String author = "unknown";
+    private int view;
+    private String birthtime;
+
+    private String image = "";
 
     @JsonIgnore
     private Boolean isdeleted = false;
 
     public PostDto() {
     }
-    public PostDto(String title, String content) {
+
+    public PostDto(String authorEmail){
+        this.authorEmail = authorEmail;
+    }
+
+    public PostDto(String authorEmail,String title, String content) {
         id = 0L;
+        this.authorEmail = authorEmail;
         this.title = title;
         this.content = content;
     }
@@ -60,6 +74,32 @@ public class PostDto {
     }
     public void setAuthor(String author) {
         this.author = author;
+    }
+    public int getView() {
+        return view;
+    }
+    public void setView(int view) {
+        this.view = view;
+    }
+    public String getBirthtime() {
+        return birthtime;
+    }
+    public void setBirthtime(String timeStamp) {
+        this.birthtime = timeStamp;
+    }
+
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
     }
 
 
