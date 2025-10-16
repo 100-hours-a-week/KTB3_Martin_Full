@@ -58,7 +58,7 @@ public class UserApiController {
     public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) session.invalidate();
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unlogged in");
+        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unlogged in");
         return ResponseEntity.
                 status(HttpStatus.OK).
                 body((Map.of("message", "logout success")));
