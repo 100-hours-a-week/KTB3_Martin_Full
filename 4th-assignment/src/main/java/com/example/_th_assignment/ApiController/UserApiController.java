@@ -54,7 +54,7 @@ public class UserApiController {
                 .body(map);
     }
 
-    @DeleteMapping("/logout")
+    @DeleteMapping("/sesion")
     public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) session.invalidate();
