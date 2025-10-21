@@ -90,7 +90,7 @@ public class CommentRepository {
     }
 
     public long count(long postid) {
-        return sequencemap.get(postid).get();
+        return sequencemap.computeIfAbsent(postid, v -> new AtomicLong(0L)).get();
     }
 
 

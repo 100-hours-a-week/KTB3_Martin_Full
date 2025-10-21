@@ -46,16 +46,12 @@ public class PostRepository {
         return postDto;
     }
     public PostDto update(Long id, PostDto postDto) {
-//        PostDto post = getbyId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"post not found"));
-//        if(post.getIsdeleted())
-//            throw new ResponseStatusException((HttpStatus.NOT_FOUND), "post not found");
 
         postStore.put(id, postDto);
         return postDto;
     }
 
     public void delete(long id) {
-//        PostDto postDto = getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "post not found"));
         postStore.get(id).setIsdeleted(true);
     }
 

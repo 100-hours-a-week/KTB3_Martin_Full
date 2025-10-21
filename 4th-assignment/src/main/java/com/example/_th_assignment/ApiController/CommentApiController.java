@@ -69,15 +69,15 @@ public class CommentApiController {
 
         comment = commentService.saveComment(postid, comment);
 
-        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "save comment success");
-        response.put("comment",comment);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{postid}/{id}")
                 .buildAndExpand(comment.getPostid(), comment.getId())
                 .toUri();
+
+        log.info("created comment for postid={}",postid);
+
         return ResponseEntity.created(location)
                 .body(ApiResponse.success("create comment success", comment));
     }
@@ -87,9 +87,9 @@ public class CommentApiController {
             @PathVariable Long postid, @PathVariable Long id,
             @Valid @RequestBody CommentDto comment, HttpServletRequest request){
         sessionManager.access2Resource(request);
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
-        if(!user.getEmail().equals(commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No Permission");
+
+        String writerEmail =commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail();
+        checkAuth(request,writerEmail);
 
         CommentDto commentToUpdate = commentService.getByPostIdAndCommentId(postid, id);
         commentToUpdate.setContent(comment.getContent());
@@ -103,12 +103,20 @@ public class CommentApiController {
     public ResponseEntity<Map<String, Object>>  deleteComment(
             @PathVariable Long postid, @PathVariable Long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
-        if(!user.getEmail().equals(commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No Permission");
+
+        String writerEmail = commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail();
+
+        checkAuth(request,writerEmail);
         commentService.deleteComment(postid, id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    public void checkAuth(HttpServletRequest request, String writeremail){
+        UserDto user = (UserDto) request.getSession().getAttribute("user");
+        String loggedEmail = user.getEmail();
+        if(!loggedEmail.equals(writeremail))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No Permission for treat comment");
     }
 
 

@@ -76,6 +76,6 @@ public class LikeRepository {
     }
 
     public long count(Long postId){
-        return sequencemap.get(postId).get();
+        return sequencemap.computeIfAbsent(postId, v -> new AtomicLong(0L)).get();
     }
 }

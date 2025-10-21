@@ -37,6 +37,11 @@ public class PostDto {
         this.authorEmail = authorEmail;
     }
 
+    public PostDto(String authorEmail, String author){
+        this.authorEmail = authorEmail;
+        this.author = author;
+    }
+
     public PostDto(String authorEmail,String title, String content) {
         id = 0L;
         this.authorEmail = authorEmail;

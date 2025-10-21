@@ -40,10 +40,12 @@ public class PostService {
     }
 
     public void deletePost(long id) {
+        getPost(id);
         postRepository.delete(id);
     }
 
     public PostDto updatePost(Long id, PostDto postDto) {
+        getPost(id);
         return postRepository.update(id, postDto);
     }
 
@@ -60,6 +62,7 @@ public class PostService {
         long view = postDto.getView();
         String birthtime = postDto.getBirthtime();
         String image = "";
+
         if(requestPostDto.getImage()!=null){
             image = requestPostDto.getImage();
         }
@@ -68,6 +71,7 @@ public class PostService {
 
         return newpost;
     }
+
 
     public long count(){
         return postRepository.count();
