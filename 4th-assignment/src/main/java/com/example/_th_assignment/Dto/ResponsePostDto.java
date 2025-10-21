@@ -16,17 +16,17 @@ public class ResponsePostDto {
     private String author = "unknown";
 
     @JsonView(JsonViewGroup.summaryview.class)
-    private int view;
+    private long view;
     @JsonView(JsonViewGroup.summaryview.class)
     private String birthtime;
     @JsonView(JsonViewGroup.summaryview.class)
-    private int comments;
+    private long comments;
     @JsonView(JsonViewGroup.summaryview.class)
-    private int likes;
+    private long likes;
 
     public ResponsePostDto() {}
 
-    public ResponsePostDto(PostDto postDto, int comments, int likes) {
+    public ResponsePostDto(PostDto postDto, long comments, long likes) {
 
 
         this.title = postDto.getTitle();
@@ -49,7 +49,7 @@ public class ResponsePostDto {
         return author;
     }
 
-    public int getView(){
+    public long getView(){
         return view;
     }
 
@@ -57,10 +57,10 @@ public class ResponsePostDto {
         return birthtime;
     }
 
-    public int getComments(){
+    public long getComments(){
         return comments;
     }
-    public int getLikes(){
+    public long getLikes(){
         return likes;
     }
 

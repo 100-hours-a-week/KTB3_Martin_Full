@@ -47,16 +47,7 @@ public class PostService {
         return postRepository.update(id, postDto);
     }
 
-    public PostDto updatePostAuthor(PostDto postDto, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            UserDto user = (UserDto) session.getAttribute("user");
-            postDto.setAuthor(user.getNickname());
-        }
-        return postDto;
-    }
-
-    public ResponsePostDto apply2ResponseDto(PostDto postDto, int commentnum, int likenum) {
+    public ResponsePostDto apply2ResponseDto(PostDto postDto, long commentnum, long likenum) {
         return new ResponsePostDto(postDto, commentnum, likenum);
     }
 
@@ -68,6 +59,10 @@ public class PostService {
         }
 
         return postDto;
+    }
+
+    public long count(){
+        return postRepository.count();
     }
 
 

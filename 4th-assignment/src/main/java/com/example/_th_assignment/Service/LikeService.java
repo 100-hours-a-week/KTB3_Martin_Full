@@ -43,6 +43,10 @@ public class LikeService {
         likeRepository.delete(postid);
     }
 
+    public long countByPostId(Long postid){
+        return likeRepository.count(postid);
+    }
+
 
 
 

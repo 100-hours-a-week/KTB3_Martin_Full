@@ -6,6 +6,7 @@ public class LikeDto {
     private String author = "unknown";
     private Long postid;
     private String authorEmail;
+    private Long id;
 
 
     @JsonIgnore
@@ -41,6 +42,12 @@ public class LikeDto {
     }
     public void setAuthorEmail(String authorEmail) {
         this.authorEmail = authorEmail;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

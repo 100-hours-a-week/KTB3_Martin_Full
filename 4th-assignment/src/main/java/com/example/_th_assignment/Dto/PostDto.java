@@ -22,7 +22,7 @@ public class PostDto {
     private String content;
 
     private String author = "unknown";
-    private int view = 0;
+    private long view = 0;
     private String birthtime ="";
 
     private String image = "";
@@ -75,10 +75,10 @@ public class PostDto {
     public void setAuthor(String author) {
         this.author = author;
     }
-    public int getView() {
+    public long getView() {
         return view;
     }
-    public void setView(int view) {
+    public void setView(long view) {
         this.view = view;
     }
     public String getBirthtime() {

@@ -47,8 +47,8 @@ public class PostApiController {
         List<PostDto> posts = postService.getAllPosts();
         List<ResponsePostDto> responsePosts = new ArrayList<>();
         for (PostDto postDto : posts) {
-            int commentnum = commentService.getByPostId(postDto.getId()).size();
-            int likenum = likeService.getbyPostId(postDto.getId()).size();
+            long commentnum = commentService.countByPostId((postDto.getId()));
+            long likenum = likeService.countByPostId((postDto.getId()));
             responsePosts.add(postService.apply2ResponseDto(postDto, commentnum, likenum));
         }
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();

@@ -46,4 +46,8 @@ public class CommentService {
         commentRepository.delete(postId);
     }
 
+    public long countByPostId(Long postId) {
+        return commentRepository.count(postId);
+    }
+
 }

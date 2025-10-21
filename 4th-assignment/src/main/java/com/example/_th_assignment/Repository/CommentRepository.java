@@ -8,16 +8,18 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class CommentRepository {
 //    private Long sequence;
-    private final HashMap<Long, LinkedHashMap<Long, CommentDto>> commentStore;
-    private final HashMap<Long, Long> sequencemap;
+    private final ConcurrentHashMap<Long, AtomicLong> sequencemap;
+    private final ConcurrentHashMap<Long, LinkedHashMap<Long, CommentDto>> commentStore;
 
     public CommentRepository() {
-        commentStore = new LinkedHashMap<>();
-        sequencemap = new HashMap<>();
+        commentStore = new ConcurrentHashMap<>();
+        sequencemap = new ConcurrentHashMap<>();
 
 
         save(1L, new CommentDto(1L, "good", "foo@bar"));
@@ -26,7 +28,8 @@ public class CommentRepository {
     }
 
     public CommentDto save(Long postId, CommentDto comment) {
-        Long sequence = sequencemap.compute(postId, (k, v) -> (v == null) ? 1 : v + 1);
+        long sequence = sequencemap.computeIfAbsent(postId, v -> new AtomicLong())
+                .incrementAndGet();
 
         comment.setId(sequence);
         comment.setPostId(postId);
@@ -84,6 +87,10 @@ public class CommentRepository {
         for(CommentDto comment : comments.values()) {
             comment.setIsdeleted(true);
         }
+    }
+
+    public long count(long postid) {
+        return sequencemap.get(postid).get();
     }
 
 

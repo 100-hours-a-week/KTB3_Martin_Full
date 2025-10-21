@@ -8,16 +8,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class PostRepository {
     private final LinkedHashMap<Long, PostDto> postStore;
 
-    private long sequence;
+    private final AtomicLong sequence;
 
     public PostRepository() {
         postStore = new LinkedHashMap<>();
-        sequence = 0L;
+        sequence = new AtomicLong(0);
 
         save(new PostDto("foo@bar","내가 어제 먹은것", "감자"));
         save(new PostDto("foo@bar","내가 오늘 먹은것", "고구마"));
@@ -37,11 +38,11 @@ public class PostRepository {
     }
 
     public PostDto save(PostDto postDto) {
-        postDto.setId(++sequence);
+        postDto.setId(sequence.incrementAndGet());
         String timeStamp = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss"));
         postDto.setBirthtime(timeStamp);
-        postStore.putFirst(sequence, postDto);
+        postStore.putFirst(sequence.get(), postDto);
         return postDto;
     }
     public PostDto update(Long id, PostDto postDto) {
@@ -56,6 +57,10 @@ public class PostRepository {
     public void delete(long id) {
         PostDto postDto = getbyId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "post not found"));
         postDto.setIsdeleted(true);
+    }
+
+    public long count(){
+        return sequence.get();
     }
 
 
