@@ -44,6 +44,18 @@ public class PostDto {
         this.content = content;
     }
 
+    public PostDto(Long id, String authorEmail,
+                   String title, String content, String author, long view, String birthtime, String image) {
+        this.id = id;
+        this.authorEmail = authorEmail;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.view = view;
+        this.birthtime = birthtime;
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }

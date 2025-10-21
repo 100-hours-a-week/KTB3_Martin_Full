@@ -52,13 +52,21 @@ public class PostService {
     }
 
     public PostDto apply2PostDto(RequestPostDto requestPostDto, PostDto postDto) {
-        postDto.setTitle(requestPostDto.getTitle());
-        postDto.setContent(requestPostDto.getContent());
+        Long id = postDto.getId();
+        String email = postDto.getAuthorEmail();
+        String title = requestPostDto.getTitle();
+        String content = requestPostDto.getContent();
+        String author = postDto.getAuthor();
+        long view = postDto.getView();
+        String birthtime = postDto.getBirthtime();
+        String image = "";
         if(requestPostDto.getImage()!=null){
-            postDto.setImage(requestPostDto.getImage());
+            image = requestPostDto.getImage();
         }
 
-        return postDto;
+        PostDto newpost = new PostDto(id,email,title,content,author,view,birthtime,image);
+
+        return newpost;
     }
 
     public long count(){

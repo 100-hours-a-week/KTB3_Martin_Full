@@ -1,5 +1,6 @@
 package com.example._th_assignment.ApiController;
 
+import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.Dto.CommentDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Service.CommentService;
@@ -7,6 +8,7 @@ import com.example._th_assignment.Service.PostService;
 import com.example._th_assignment.Service.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,45 +23,42 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/comments")
-public class CommentAPiController {
+@Slf4j
+public class CommentApiController {
     private final CommentService commentService;
     private final PostService postService;
     private final SessionManager sessionManager;
 
     @Autowired
-    public CommentAPiController(CommentService commentService, PostService postService, SessionManager sessionManager) {
+    public CommentApiController(CommentService commentService, PostService postService, SessionManager sessionManager) {
         this.commentService = commentService;
         this.postService = postService;
         this.sessionManager = sessionManager;
     }
 
     @GetMapping("/{postid}")
-    public ResponseEntity<Map<String, Object>> getComments(@PathVariable Long postid, HttpServletRequest request){
+    public ResponseEntity<Object> getComments(@PathVariable Long postid, HttpServletRequest request){
         sessionManager.access2Resource(request);
         postService.getPost(postid);
         List<CommentDto> list = commentService.getByPostId(postid);
+        log.info("get all comments for postid={}",postid);
 
-        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "get all comments success");
-        response.put("comments",list);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("get all comments success", list));
     }
 
     @GetMapping("/{postid}/{id}")
-    public ResponseEntity<Map<String, Object>> getComment(@PathVariable Long postid,
+    public ResponseEntity<Object> getComment(@PathVariable Long postid,
                                                  @PathVariable Long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
         postService.getPost(postid);
         CommentDto comment = commentService.getByPostIdAndCommentId(postid, id);
+        log.info("get comment for postid={}",postid);
 
-        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "get comment success");
-        response.put("comment", comment);
-        return ResponseEntity.ok(Map.of("comment", comment));
+        return ResponseEntity.ok(ApiResponse.success("get comment success", comment));
     }
 
     @PostMapping("/{postid}")
-    public ResponseEntity<Map<String, Object>>  postComment(
+    public ResponseEntity<Object>  postComment(
             @PathVariable Long postid, @Valid @RequestBody CommentDto comment, HttpServletRequest request){
         sessionManager.access2Auth(request);
         postService.getPost(postid);
@@ -79,11 +78,12 @@ public class CommentAPiController {
                 .path("/{postid}/{id}")
                 .buildAndExpand(comment.getPostid(), comment.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success("create comment success", comment));
     }
 
     @PutMapping("/{postid}/{id}")
-    public ResponseEntity<Map<String, Object>>  updateComment(
+    public ResponseEntity<Object>  updateComment(
             @PathVariable Long postid, @PathVariable Long id,
             @Valid @RequestBody CommentDto comment, HttpServletRequest request){
         sessionManager.access2Resource(request);
@@ -96,9 +96,7 @@ public class CommentAPiController {
         commentToUpdate =  commentService.updateComment(postid,id, commentToUpdate);
 
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "update comment success");
-        response.put("comment",commentToUpdate);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("update comment success", commentToUpdate));
     }
 
     @DeleteMapping("/{postid}/{id}")
