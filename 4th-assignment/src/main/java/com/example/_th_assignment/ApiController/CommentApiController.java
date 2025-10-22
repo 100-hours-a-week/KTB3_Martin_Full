@@ -3,6 +3,7 @@ package com.example._th_assignment.ApiController;
 import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.Dto.CommentDto;
 import com.example._th_assignment.Dto.UserDto;
+import com.example._th_assignment.Service.AuthorizationManager;
 import com.example._th_assignment.Service.CommentService;
 import com.example._th_assignment.Service.PostService;
 import com.example._th_assignment.Service.SessionManager;
@@ -28,12 +29,15 @@ public class CommentApiController {
     private final CommentService commentService;
     private final PostService postService;
     private final SessionManager sessionManager;
+    private final AuthorizationManager authorizationManager;
 
     @Autowired
-    public CommentApiController(CommentService commentService, PostService postService, SessionManager sessionManager) {
+    public CommentApiController(CommentService commentService, PostService postService,
+                                SessionManager sessionManager, AuthorizationManager authorizationManager) {
         this.commentService = commentService;
         this.postService = postService;
         this.sessionManager = sessionManager;
+        this.authorizationManager = authorizationManager;
     }
 
     @GetMapping("/{postid}")
@@ -41,6 +45,7 @@ public class CommentApiController {
         sessionManager.access2Resource(request);
         postService.getPost(postid);
         List<CommentDto> list = commentService.getByPostId(postid);
+
         log.info("get all comments for postid={}",postid);
 
         return ResponseEntity.ok(ApiResponse.success("get all comments success", list));
@@ -64,22 +69,24 @@ public class CommentApiController {
         postService.getPost(postid);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
-        comment.setAuthor(user.getNickname());
-        comment.setAuthorEmail(user.getEmail());
 
-        comment = commentService.saveComment(postid, comment);
+        CommentDto newcomment = commentService.apply2Comment(comment,user);
+
+
+
+        newcomment = commentService.saveComment(postid, newcomment);
 
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{postid}/{id}")
-                .buildAndExpand(comment.getPostid(), comment.getId())
+                .buildAndExpand(newcomment.getPostid(), newcomment.getId())
                 .toUri();
 
         log.info("created comment for postid={}",postid);
 
         return ResponseEntity.created(location)
-                .body(ApiResponse.success("create comment success", comment));
+                .body(ApiResponse.success("create comment success", newcomment));
     }
 
     @PutMapping("/{postid}/{id}")
@@ -89,14 +96,12 @@ public class CommentApiController {
         sessionManager.access2Resource(request);
 
         String writerEmail =commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail();
-        checkAuth(request,writerEmail);
+        authorizationManager.checkAuth(request,writerEmail);
 
-        CommentDto commentToUpdate = commentService.getByPostIdAndCommentId(postid, id);
-        commentToUpdate.setContent(comment.getContent());
-        commentToUpdate =  commentService.updateComment(postid,id, commentToUpdate);
 
-        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
-        return ResponseEntity.ok(ApiResponse.success("update comment success", commentToUpdate));
+        CommentDto newcomment =  commentService.updateComment(postid,id, comment);
+
+        return ResponseEntity.ok(ApiResponse.success("update comment success", newcomment));
     }
 
     @DeleteMapping("/{postid}/{id}")
@@ -106,18 +111,14 @@ public class CommentApiController {
 
         String writerEmail = commentService.getByPostIdAndCommentId(postid, id).getAuthorEmail();
 
-        checkAuth(request,writerEmail);
+        authorizationManager.checkAuth(request,writerEmail);
+
         commentService.deleteComment(postid, id);
 
         return ResponseEntity.noContent().build();
     }
 
-    public void checkAuth(HttpServletRequest request, String writeremail){
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
-        String loggedEmail = user.getEmail();
-        if(!loggedEmail.equals(writeremail))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No Permission for treat comment");
-    }
+
 
 
 }

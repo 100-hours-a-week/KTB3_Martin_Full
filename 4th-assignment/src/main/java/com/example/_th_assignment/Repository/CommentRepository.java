@@ -66,23 +66,19 @@ public class CommentRepository {
 
 
     public CommentDto update(Long postId, Long commentId, CommentDto newcomment) {
-        getbyPostIdAndCommentId(postId,commentId).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "comment not found"));
         LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
-        comments.replace(commentId,  newcomment);
-        return comments.get(newcomment.getId());
+        comments.put(commentId, newcomment);
+        return newcomment;
     }
 
 
     public void delete(Long postId, Long commentId) {
-        CommentDto comment = getbyPostIdAndCommentId(postId, commentId).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "comment not found"));
+        LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
+        CommentDto comment = comments.get(commentId);
         comment.setIsdeleted(true);
-
     }
 
     public void delete(Long postId) {
-        if(!commentStore.containsKey(postId)) return;
         LinkedHashMap<Long, CommentDto> comments = commentStore.get(postId);
         for(CommentDto comment : comments.values()) {
             comment.setIsdeleted(true);

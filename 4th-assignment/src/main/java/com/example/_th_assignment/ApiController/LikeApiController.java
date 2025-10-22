@@ -1,6 +1,7 @@
 package com.example._th_assignment.ApiController;
 
 
+import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.Dto.LikeDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Service.LikeService;
@@ -36,24 +37,19 @@ public class LikeApiController {
     }
 
     @GetMapping("/{postid}")
-    public ResponseEntity<Map<String, Object>> getLikes(
+    public ResponseEntity<?> getLikes(
             @PathVariable Long postid, @RequestParam(value = "user", required = false) String email,
             HttpServletRequest request) {
         sessionManager.access2Resource(request);
         postService.getPost(postid);
 
+
         if(email ==null) {
             List<LikeDto> list = likeService.getbyPostId(postid);
-            Map<String, Object> response = new LinkedHashMap<>();
-            response.put("message", "get likes success");
-            response.put("likes", list);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(ApiResponse.success("get likes success", list));
         }
         LikeDto like = likeService.getbyPostIdAndAuthorEmail(postid, email);
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "get like success");
-        response.put("likes", like);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("get like success", like));
 
     }
 

@@ -1,16 +1,10 @@
 package com.example._th_assignment.Service;
 
-import com.example._th_assignment.Dto.PostDto;
-import com.example._th_assignment.Dto.RequestPostDto;
-import com.example._th_assignment.Dto.ResponsePostDto;
-import com.example._th_assignment.Dto.UserDto;
+import com.example._th_assignment.CustomException.PostNotFoundException;
+import com.example._th_assignment.Dto.*;
 import com.example._th_assignment.Repository.PostRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,9 +24,8 @@ public class PostService {
     }
 
     public PostDto getPost(long id) {
-        PostDto post =  postRepository.getbyId(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Post not found "));
-        return post;
+        return postRepository.getbyId(id)
+                .orElseThrow(()-> new PostNotFoundException(id));
     }
 
     public PostDto savePost(PostDto postDto){
@@ -49,8 +42,12 @@ public class PostService {
         return postRepository.update(id, postDto);
     }
 
-    public ResponsePostDto apply2ResponseDto(PostDto postDto, long commentnum, long likenum) {
+    public ResponsePostDto apply2ResponsePostDto(PostDto postDto, long commentnum, long likenum) {
         return new ResponsePostDto(postDto, commentnum, likenum);
+    }
+
+    public ResponsePostAndCommentsDto apply2ResponsePostAndCommentsDto(ResponsePostDto responsepost, List<CommentDto> comments) {
+        return new ResponsePostAndCommentsDto(responsepost, comments);
     }
 
     public PostDto apply2PostDto(RequestPostDto requestPostDto, PostDto postDto) {

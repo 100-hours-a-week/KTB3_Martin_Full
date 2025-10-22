@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public class CommentDto {
 
-    private Long id;
-    private Long postid;
+    private long id;
+    private long postid;
     private String author = "unknown";
     private String authorEmail = "unknown";
     @NotBlank(message = "comment content should not empty")
@@ -23,6 +23,15 @@ public class CommentDto {
         this.postid = postID;
         this.content = content;
         this.authorEmail = authorEmail;
+    }
+
+    public CommentDto(Long id, Long postid, String author, String authorEmail, String content, String birthTime) {
+        this.id = id;
+        this.postid = postid;
+        this.author = author;
+        this.authorEmail = authorEmail;
+        this.content = content;
+        this.birthTime = birthTime;
     }
     public Long getId() {
         return id;

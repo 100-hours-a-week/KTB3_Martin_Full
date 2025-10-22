@@ -8,21 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -34,13 +28,16 @@ public class PostApiController {
     private final CommentService commentService;
     private final LikeService likeService;
     private final SessionManager sessionManager;
+    private final AuthorizationManager authorizationManager;
 
     @Autowired
-    public PostApiController(PostService postService, CommentService commentService, LikeService likeService, SessionManager sessionManager) {
+    public PostApiController(PostService postService, CommentService commentService, LikeService likeService,
+                             SessionManager sessionManager, AuthorizationManager authorizationManager) {
         this.postService = postService;
         this.commentService = commentService;
         this.likeService = likeService;
         this.sessionManager = sessionManager;
+        this.authorizationManager = authorizationManager;
     }
 
     @GetMapping
@@ -52,11 +49,11 @@ public class PostApiController {
         for (PostDto postDto : posts) {
             long commentnum = commentService.countByPostId((postDto.getId()));
             long likenum = likeService.countByPostId((postDto.getId()));
-            responsePosts.add(postService.apply2ResponseDto(postDto, commentnum, likenum));
+            responsePosts.add(postService.apply2ResponsePostDto(postDto, commentnum, likenum));
         }
         LinkedHashMap<String, Object> response = new LinkedHashMap<>();
         response.put ("message", "get all posts success");
-        response.put("posts", responsePosts);
+        response.put("data", responsePosts);
 
 
 
@@ -71,6 +68,7 @@ public class PostApiController {
     public ResponseEntity<Object> getPost(@PathVariable long id, HttpServletRequest request) {
         sessionManager.access2Resource(request);
         PostDto post = postService.getPost(id);
+
         post.setView(post.getView()+1);
 
         long commentsnum = commentService.countByPostId((post.getId()));
@@ -80,10 +78,13 @@ public class PostApiController {
 
 
         String message = "get post/"+id+ " success";
-        ResponsePostDto responsePostDto = postService.apply2ResponseDto(post,commentsnum,likesnum);
+        ResponsePostDto responsePost = postService.apply2ResponsePostDto(post,commentsnum,likesnum);
         List<CommentDto> comments = commentService.getByPostId(id);
 
-        return ResponseEntity.ok(ApiResponse.success(message,responsePostDto,comments));
+        ResponsePostAndCommentsDto responsePostAndCommentsDto =
+                postService.apply2ResponsePostAndCommentsDto(responsePost,comments);
+
+        return ResponseEntity.ok(ApiResponse.success(message,responsePostAndCommentsDto));
     }
     @PostMapping
     public ResponseEntity<Object> postPost(
@@ -114,7 +115,7 @@ public class PostApiController {
         PostDto post = postService.getPost(id);
         String writerEmail = user.getEmail();
 
-        checkAuth(request, writerEmail);
+        authorizationManager.checkAuth(request,writerEmail);
 
         post = postService.apply2PostDto(requestPostDto, post);
         post = postService.updatePost(id, post);
@@ -124,14 +125,14 @@ public class PostApiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String,Object>> deletePost(@PathVariable long id, HttpServletRequest request){
+    public ResponseEntity<Object> deletePost(@PathVariable long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
         PostDto post = postService.getPost(id);
 
         String writerEmail = user.getEmail();
 
-        checkAuth(request, writerEmail);
+        authorizationManager.checkAuth(request,writerEmail);
 
         postService.deletePost(id);
         commentService.deleteAllComment(id);
@@ -142,12 +143,6 @@ public class PostApiController {
 
     }
 
-    public void checkAuth(HttpServletRequest request, String writeremail){
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
-        String loggedEmail = user.getEmail();
-        if(!loggedEmail.equals(writeremail))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No Permission for treat post");
-    }
 
 
 }
