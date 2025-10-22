@@ -6,6 +6,8 @@ import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Dto.ValidationGroup;
 import com.example._th_assignment.Service.SessionManager;
 import com.example._th_assignment.Service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,6 +65,11 @@ public class UserApiController {
     }
 
     @PostMapping
+    @Operation(summary = "회원 가입", description = "같은 이메일이 없다면 회원가입 가능")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "가입 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "이미 있는 이메일")
+    })
     public ResponseEntity<Object> register(
             @Validated(ValidationGroup.Register.class) @RequestBody RequestUserDto newuser){
         checkValidPassword(newuser);

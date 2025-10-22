@@ -7,6 +7,9 @@ import com.example._th_assignment.Service.AuthorizationManager;
 import com.example._th_assignment.Service.CommentService;
 import com.example._th_assignment.Service.PostService;
 import com.example._th_assignment.Service.SessionManager;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -41,7 +45,14 @@ public class CommentApiController {
     }
 
     @GetMapping("/{postid}")
-    public ResponseEntity<Object> getComments(@PathVariable Long postid, HttpServletRequest request){
+    @Operation(summary = "댓글 전체 조회", description = "게시글에 작성된 댓글을 조회")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "로그인 필요함")
+    })
+    public ResponseEntity<Object> getComments(@Parameter(description = "조회할 게시글 id", required = true, example = "1")
+                                                  @PathVariable Long postid, HttpServletRequest request){
         sessionManager.access2Resource(request);
         postService.getPost(postid);
         List<CommentDto> list = commentService.getByPostId(postid);

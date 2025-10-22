@@ -74,9 +74,6 @@ public class PostApiController {
         long commentsnum = commentService.countByPostId((post.getId()));
         long likesnum = likeService.countByPostId((post.getId()));
 
-
-
-
         String message = "get post/"+id+ " success";
         ResponsePostDto responsePost = postService.apply2ResponsePostDto(post,commentsnum,likesnum);
         List<CommentDto> comments = commentService.getByPostId(id);
