@@ -2,10 +2,11 @@ package com.example._th_assignment.CustomException;
 
 public class LikeNotFoundException extends DtoNotFoundException{
     private final long postid;
-    private final long id;
-    public LikeNotFoundException(long postId, long id) {
-        super("Like not found with id:" + id + " in post id:" + postId);
+    private final String email;
+
+    public LikeNotFoundException(long postId, String email) {
+        super("Like not found with email:" + email + " in postid:" + postId);
         this.postid = postId;
-        this.id = id;
+        this.email = email;
     }
 }

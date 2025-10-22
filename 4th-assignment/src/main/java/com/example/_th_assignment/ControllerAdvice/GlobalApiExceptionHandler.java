@@ -2,7 +2,9 @@ package com.example._th_assignment.ControllerAdvice;
 
 
 import com.example._th_assignment.ApiResponse.ApiResponse;
+import com.example._th_assignment.CustomException.DtoConflictException;
 import com.example._th_assignment.CustomException.DtoNotFoundException;
+import com.example._th_assignment.CustomException.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,26 @@ public class GlobalApiExceptionHandler {
                 .status(statuscode)
                 .body(ApiResponse.failed(status.getReasonPhrase(), message));
     }
+
+    @ExceptionHandler(DtoConflictException.class)
+    public ResponseEntity<?> handleDtoConflict(DtoConflictException ex) {
+        HttpStatusCode statuscode = HttpStatus.CONFLICT;
+
+        return ResponseEntity
+                .status(statuscode)
+                .body(ApiResponse.failed(ex.explain(),  ex.getMessage()));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFound(UserNotFoundException ex) {
+        HttpStatusCode statuscode = HttpStatus.UNAUTHORIZED;
+        HttpStatus status = HttpStatus.valueOf(statuscode.value());
+
+        return ResponseEntity.status(statuscode)
+                .body(ApiResponse.failed(status.getReasonPhrase(), ex.getMessage()));
+    }
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {

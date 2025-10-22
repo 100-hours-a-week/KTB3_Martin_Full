@@ -46,7 +46,7 @@ public class CommentApiController {
         postService.getPost(postid);
         List<CommentDto> list = commentService.getByPostId(postid);
 
-        log.info("get all comments for postid={}",postid);
+//        log.info("get all comments for postid={}",postid);
 
         return ResponseEntity.ok(ApiResponse.success("get all comments success", list));
     }
@@ -57,7 +57,7 @@ public class CommentApiController {
         sessionManager.access2Resource(request);
         postService.getPost(postid);
         CommentDto comment = commentService.getByPostIdAndCommentId(postid, id);
-        log.info("get comment for postid={}",postid);
+//        log.info("get comment for postid={}",postid);
 
         return ResponseEntity.ok(ApiResponse.success("get comment success", comment));
     }
@@ -71,9 +71,6 @@ public class CommentApiController {
 
 
         CommentDto newcomment = commentService.apply2Comment(comment,user);
-
-
-
         newcomment = commentService.saveComment(postid, newcomment);
 
 

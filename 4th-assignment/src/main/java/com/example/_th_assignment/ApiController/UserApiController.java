@@ -1,5 +1,6 @@
 package com.example._th_assignment.ApiController;
 
+import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.Dto.RequestUserDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Dto.ValidationGroup;
@@ -32,7 +33,7 @@ public class UserApiController {
 
     }
     @PostMapping("/session")
-    public ResponseEntity<Map<String, Object>> login(
+    public ResponseEntity<Object> login(
             @Validated(ValidationGroup.Login.class) @RequestBody UserDto tryuser,
                                    HttpServletRequest request) {
 
@@ -45,119 +46,91 @@ public class UserApiController {
         session = request.getSession();
         session.setAttribute("user", user);
 
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("message", "login success");
-        map.put("user", user);
 
         return ResponseEntity.
                 status(HttpStatus.OK)
-                .body(map);
+                .body(ApiResponse.success("login success", user));
     }
 
     @DeleteMapping("/sesion")
-    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) session.invalidate();
-        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unlogged in");
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
+        HttpSession session = sessionManager.access2Auth(request);
+        session.invalidate();
+
         return ResponseEntity.
                 status(HttpStatus.OK).
-                body((Map.of("message", "logout success")));
+                body(ApiResponse.success("logout success"));
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> register(
-            @Validated(ValidationGroup.Register.class) @RequestBody RequestUserDto updateuser){
-        if(!updateuser.getPassword().equals(updateuser.getCheckingpassword()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password and checkingpassword are not same");
-        UserDto user = userService.apply2UserDto(updateuser);
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("message", "register success");
-        map.put("user", userService.saveUser(user));
-        return ResponseEntity.
-                status(HttpStatus.OK).
-                body(map);
+    public ResponseEntity<Object> register(
+            @Validated(ValidationGroup.Register.class) @RequestBody RequestUserDto newuser){
+        checkValidPassword(newuser);
+        UserDto user = userService.apply2User(newuser);
+        user = userService.saveUser(user);
+        return ResponseEntity.ok(ApiResponse.success("register success", user));
 
     }
+
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getUserProperty(HttpServletRequest request) {
-        sessionManager.access2Auth(request);
-        HttpSession session = request.getSession(false);
+    public ResponseEntity<Object> getUserProperty(HttpServletRequest request) {
+        HttpSession session = sessionManager.access2Auth(request);
         UserDto user = (UserDto) session.getAttribute("user");
 
-        Map<String,Object> map = new LinkedHashMap<>();
-        map.put("message", "user found");
-        map.put("user", user);
-        return ResponseEntity.
-                status(HttpStatus.OK).
-                body(map);
+        return ResponseEntity.ok(ApiResponse.success("user found", user));
+
     }
     @PutMapping
-    public ResponseEntity<Map<String, Object>> updateUser(
-            @Validated(ValidationGroup.UpdateProperty.class ) @RequestBody RequestUserDto updateuser,
+    public ResponseEntity<Object> updateUser(
+            @Validated(ValidationGroup.UpdateProperty.class ) @RequestBody RequestUserDto newuser,
             HttpServletRequest request) {
         HttpSession session = sessionManager.access2Auth(request);
-        UserDto previousUser = (UserDto) session.getAttribute("user");
-//        if(user.getEmail() != null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email can't be changed");
-//        if(user.getPassword() != null)  throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password can't be changed in here");
+        UserDto user = (UserDto) session.getAttribute("user");
 
-        UserDto newuser = userService.apply2UserDto(updateuser);
-        newuser = userService.updateUser(previousUser.getEmail(),newuser);
+        user = userService.apply2UserForUpdate(newuser, user);
+        user = userService.updateUser(user.getEmail(),user);
         session.removeAttribute("user");
-        session.setAttribute("user", newuser);
+        session.setAttribute("user", user);
 
+        return ResponseEntity.ok(ApiResponse.success("update success", user));
 
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("message", "update success");
-        map.put("user", newuser);
-        return ResponseEntity.
-                status(HttpStatus.OK).
-                body(map);
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Map<String, Object>> updateUserPassword(
-            @Validated(ValidationGroup.UpdatePassword.class) @RequestBody RequestUserDto updateuser,
+    public ResponseEntity<?> updateUserPassword(
+            @Validated(ValidationGroup.UpdatePassword.class) @RequestBody RequestUserDto newuser,
             HttpServletRequest request
     ){
-        if(!updateuser.getPassword().equals(updateuser.getCheckingpassword()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password and checkingpassword are not same");
 
-        sessionManager.access2Auth(request);
-        HttpSession session = request.getSession(false);
-        UserDto previousUser = (UserDto) session.getAttribute("user");
-//        if(user.getEmail() != null)
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email can't be changed");
-//        if(user.getNickname() != null)
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname can't be changed in here");
+        HttpSession session = sessionManager.access2Auth(request);
+        checkValidPassword(newuser);
+        UserDto user = (UserDto) session.getAttribute("user");
 
-        UserDto newuser = userService.apply2UserDto(updateuser);
-        newuser = userService.updateUserPassword(previousUser.getEmail(), newuser);
+
+        user = userService.apply2UserForPassword(newuser, user);
+        user = userService.updateUserPassword(user.getEmail(),user);
         session.removeAttribute("user");
         session.setAttribute("user", newuser);
 
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("message", "password updated");
-        map.put("user", newuser);
-        return ResponseEntity.
-                status(HttpStatus.OK).
-                body(map);
+        return ResponseEntity.ok().body(ApiResponse.success("password updated", newuser));
+
     }
 
     @DeleteMapping
     public ResponseEntity<Map<String, Object>> deleteUser(HttpServletRequest request) {
-        sessionManager.access2Auth(request);
-        HttpSession session = request.getSession(false);
+        HttpSession session = sessionManager.access2Auth(request);
 
         UserDto user = (UserDto) session.getAttribute("user");
         userService.deleteUser(user);
         session.removeAttribute("user");
         session.invalidate();
-
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("message", "delete success");
-
         return ResponseEntity.noContent().build();
 
+    }
+
+    public void checkValidPassword(RequestUserDto user){
+        if(!user.getPassword().equals(user.getCheckingpassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password and checkingpassword are not same");
     }
 
 

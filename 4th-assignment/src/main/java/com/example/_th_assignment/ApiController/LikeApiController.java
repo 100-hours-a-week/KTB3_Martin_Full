@@ -54,35 +54,28 @@ public class LikeApiController {
     }
 
     @PostMapping("/{postId}")
-    public ResponseEntity<Map<String, Object>> saveLike(@PathVariable Long postId, HttpServletRequest request) {
+    public ResponseEntity<?> saveLike(@PathVariable Long postId, HttpServletRequest request) {
         sessionManager.access2Auth(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
-        LikeDto like = new LikeDto(postId, user.getEmail());
-        like.setAuthor(user.getNickname());
+
+
+        LikeDto like = likeService.apply2Like(new LikeDto(), user);
 
         like = likeService.saveLike(postId, like);
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "save like success");
-        response.put("like", like);
-
         URI location = URI.create("/likes/" + postId + "?user=" + like.getAuthorEmail());
-
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(location).body(ApiResponse.success("save like success", like));
     }
     @PutMapping("/{postId}")
-    public ResponseEntity<Map<String, Object>> updateLike(@PathVariable Long postId, HttpServletRequest request) {
+    public ResponseEntity<?> updateLike(@PathVariable Long postId, HttpServletRequest request) {
         sessionManager.access2Resource(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
         LikeDto like = likeService.getbyPostIdAndAuthorEmail(postId, user.getEmail());
-        like.setAuthor(user.getNickname());
+        like = likeService.apply2Like(like, user);
         like = likeService.updateLike(postId,user.getEmail(), like);
 
-        Map<String, Object> response = new LinkedHashMap<>();
-        response.put("message", "update like success");
-        response.put("like", like);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("update like success", like));
     }
 
     @DeleteMapping("/{postId}")
@@ -90,8 +83,6 @@ public class LikeApiController {
         sessionManager.access2Resource(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
-        //like가 있는지 확인
-        likeService.getbyPostIdAndAuthorEmail(postId, user.getEmail());
 
         likeService.deleteLike(postId,user.getEmail());
 

@@ -1,5 +1,7 @@
 package com.example._th_assignment.Service;
 
+import com.example._th_assignment.CustomException.UserConflictException;
+import com.example._th_assignment.CustomException.UserUnAuthorizedException;
 import com.example._th_assignment.Dto.RequestUserDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Repository.UserRepository;
@@ -17,11 +19,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto getbyEmail(String name) {
-        return userRepository.getbyEmail(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong id or password"));
+    public UserDto getbyEmail(String email) {
+        return userRepository.getbyEmail(email)
+                .orElseThrow(() -> new UserUnAuthorizedException(email));
     }
     public UserDto saveUser (UserDto userDto){
+        if(userRepository.getbyEmail(userDto.getEmail()).isPresent()){
+            throw new UserConflictException(userDto.getEmail());
+        }
         return userRepository.save(userDto);
     }
 
@@ -37,14 +42,31 @@ public class UserService {
     public UserDto checkUser(String username, String password) {
         UserDto user = getbyEmail(username);
         if(!user.getPassword().equals(password))
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "wrong id or password");
+            throw new UserUnAuthorizedException(username);
         return user;
     }
 
     public void deleteUser(UserDto user){
         userRepository.delete(user);
     }
-    public UserDto apply2UserDto(RequestUserDto requestUserDto) {
+    public UserDto apply2User(RequestUserDto requestUserDto) {
         return new UserDto(requestUserDto);
+    }
+
+    public UserDto apply2UserForUpdate(RequestUserDto requestUserDto, UserDto user){
+        String nickname = requestUserDto.getNickname();
+        String email = user.getEmail();
+        String password = user.getPassword();
+        String image = requestUserDto.getImage();
+        return new UserDto(nickname, email, password, image);
+    }
+
+    public UserDto apply2UserForPassword(RequestUserDto requestUserDto, UserDto user){
+        String nickname = user.getNickname();
+        String email = user.getEmail();
+        String password = requestUserDto.getPassword();
+        String image = user.getImage();
+
+        return new UserDto(nickname, email, password, image);
     }
 }

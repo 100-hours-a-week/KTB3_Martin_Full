@@ -34,11 +34,12 @@ public class UserDto {
     }
 
 
-    public UserDto( String password, String email, String nickname) {
+    public UserDto( String nickname, String email, String password, String image) {
 
-        this.password = password;
-        this.email = email;
         this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.image = image;
     }
 
     public String getNickname() {

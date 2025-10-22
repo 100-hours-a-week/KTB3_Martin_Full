@@ -42,13 +42,17 @@ public class LikeRepository {
         return Optional.ofNullable(likeMap.get(author)).filter( l -> !l.getIsdeleted());
     }
 
+    public boolean isExist(long postId, String authorEmail) {
+        Map<String, LikeDto> map = likeStore.get(postId);
+        if (map == null) return false;
+        return map.containsKey(authorEmail);
+    }
+
+
     public LikeDto save(Long postId, LikeDto like){
         long sequence = sequencemap.computeIfAbsent(postId, v -> new AtomicLong())
                 .incrementAndGet();
         Map<String, LikeDto> map = likeStore.computeIfAbsent(postId, v -> new LinkedHashMap<>());
-        if(map.containsKey(like.getAuthorEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "1 post, 1 user, 1 like");
-        }
         like.setPostid(postId);
         like.setId(sequence);
         map.put(like.getAuthorEmail(), like);
@@ -56,19 +60,15 @@ public class LikeRepository {
     }
 
     public LikeDto update(Long postId, String authorEmail, LikeDto newlike) {
-        getbyPostIdAndAuthorEmail(postId, authorEmail).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "like not found"));
         Map<String, LikeDto> likeMap = likeStore.get(postId);
-        likeMap.replace(authorEmail, newlike);
-        return likeMap.get(authorEmail);
+        likeMap.put(authorEmail, newlike);
+        return newlike;
     }
     public void delete(Long postId, String authorEmail){
-        LikeDto like = getbyPostIdAndAuthorEmail(postId, authorEmail).
-                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "like not found"));
+        LikeDto like = likeStore.get(postId).get(authorEmail);
         like.setIsdeleted(true);
     }
     public void delete(Long postId){
-        if(!likeStore.containsKey(postId)) return;
         Map<String, LikeDto> likeMap = likeStore.get(postId);
         for(LikeDto like: likeMap.values()){
             like.setIsdeleted(true);

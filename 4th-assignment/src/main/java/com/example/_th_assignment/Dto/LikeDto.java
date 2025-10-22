@@ -3,10 +3,10 @@ package com.example._th_assignment.Dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class LikeDto {
-    private String author = "unknown";
-    private Long postid;
-    private String authorEmail;
     private Long id;
+    private Long postid;
+    private String author = "unknown";
+    private String authorEmail;
 
 
     @JsonIgnore
@@ -16,6 +16,13 @@ public class LikeDto {
     }
     public LikeDto(Long postid, String authorEmail) {
         this.postid = postid;
+        this.authorEmail = authorEmail;
+    }
+
+    public LikeDto(long id, long postid, String author, String authorEmail) {
+        this.id = id;
+        this.postid = postid;
+        this.author = author;
         this.authorEmail = authorEmail;
     }
 

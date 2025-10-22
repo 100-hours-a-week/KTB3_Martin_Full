@@ -64,9 +64,8 @@ public class PostService {
             image = requestPostDto.getImage();
         }
 
-        PostDto newpost = new PostDto(id,email,title,content,author,view,birthtime,image);
+        return new PostDto(id,email,title,content,author,view,birthtime,image);
 
-        return newpost;
     }
 
 
