@@ -1,6 +1,6 @@
 package com.example._th_assignment.Repository;
 
-import com.example._th_assignment.CustomException.UserNotFoundException;
+
 import com.example._th_assignment.Dto.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -15,7 +15,7 @@ public class UserRepository {
 
     public UserRepository() {
         userStore = new HashMap<>();
-        UserDto user = new UserDto("daymmy", "foo@bar", "Mypassword1!", "");
+        UserDto user = new UserDto("dummy", "foo@bar", "Mypassword1!", "");
         save(user);
     }
 

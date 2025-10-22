@@ -1,5 +1,6 @@
 package com.example._th_assignment.Service;
 
+import com.example._th_assignment.CustomException.LikeConflictException;
 import com.example._th_assignment.CustomException.LikeNotFoundException;
 import com.example._th_assignment.Dto.LikeDto;
 import com.example._th_assignment.Dto.UserDto;
@@ -37,7 +38,7 @@ public class LikeService {
     public LikeDto saveLike(Long postid, LikeDto likeDto){
         String email = likeDto.getAuthorEmail();
 
-        if(isExistLike(postid, email)) throw new LikeNotFoundException(postid, email);
+        if(isExistLike(postid, email)) throw new LikeConflictException(postid, email);
 
         return likeRepository.save(postid, likeDto);
     }

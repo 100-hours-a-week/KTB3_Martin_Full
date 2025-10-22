@@ -4,7 +4,7 @@ package com.example._th_assignment.ControllerAdvice;
 import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.CustomException.DtoConflictException;
 import com.example._th_assignment.CustomException.DtoNotFoundException;
-import com.example._th_assignment.CustomException.UserNotFoundException;
+import com.example._th_assignment.CustomException.UserUnAuthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -57,8 +57,8 @@ public class GlobalApiExceptionHandler {
                 .body(ApiResponse.failed(ex.explain(),  ex.getMessage()));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFound(UserNotFoundException ex) {
+    @ExceptionHandler(UserUnAuthorizedException.class)
+    public ResponseEntity<?> handleUserNotFound(UserUnAuthorizedException ex) {
         HttpStatusCode statuscode = HttpStatus.UNAUTHORIZED;
         HttpStatus status = HttpStatus.valueOf(statuscode.value());
 

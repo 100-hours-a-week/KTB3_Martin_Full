@@ -128,7 +128,7 @@ public class PostApiController {
     public ResponseEntity<Object> deletePost(@PathVariable long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
-        PostDto post = postService.getPost(id);
+        postService.getPost(id);
 
         String writerEmail = user.getEmail();
 
