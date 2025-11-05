@@ -64,7 +64,6 @@ public class CommentApiController {
         sessionManager.access2Resource(request);
         postService.findPostById(postid);
         CommentDto comment = commentService.getByPostIdAndCommentId(postid, id);
-//        log.info("get comment for postid={}",postid);
 
         return ResponseEntity.ok(ApiResponse.success("get comment success", comment));
     }
@@ -87,7 +86,7 @@ public class CommentApiController {
                 .buildAndExpand(newcomment.getPostid(), newcomment.getId())
                 .toUri();
 
-        log.info("created comment for postid={}",postid);
+
 
         return ResponseEntity.created(location)
                 .body(ApiResponse.success("create comment success", newcomment));

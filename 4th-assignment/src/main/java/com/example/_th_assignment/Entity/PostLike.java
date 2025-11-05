@@ -1,5 +1,6 @@
 package com.example._th_assignment.Entity;
 
+import com.example._th_assignment.Dto.LikeDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,8 +22,7 @@ public class PostLike {
     @JoinColumn(name = "userid")
     private User user;
 
-    @Column(nullable = false)
-    private boolean isdeleted =false;
+
 
     public PostLike() {}
 
@@ -30,9 +30,19 @@ public class PostLike {
         this.post = post;
         this.user = user;
     }
-    public void delete(){
-        this.isdeleted=true;
+
+    public static PostLike from(Post post, User user) {
+        return new PostLike(post, user);
     }
+
+    public LikeDto toDto() {
+        long id = this.id;
+        long postid = this.post.getId();
+        String authorEmail = this.user.getEmail();
+
+        return new LikeDto(id,postid,authorEmail);
+    }
+
 
 
 

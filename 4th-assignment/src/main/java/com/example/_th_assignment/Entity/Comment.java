@@ -36,6 +36,14 @@ public class Comment {
     @Column(nullable = false)
     private boolean isdeleted = false;
 
+    public Comment(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
+
+    public Comment(){}
+
     public static Comment from(CommentDto commentDto, User user, Post post){
         String content = commentDto.getContent();
         return new Comment(content,user,post);
@@ -60,13 +68,13 @@ public class Comment {
 
     }
 
-
-    public Comment(String content, User user, Post post) {
-        this.content = content;
-        this.user = user;
-        this.post = post;
+    public void updateComment(CommentDto commentDto){
+        this.content = commentDto.getContent();
     }
 
-    public Comment()
+    public void delete(){
+        this.isdeleted = true;
+    }
+
 
 }
