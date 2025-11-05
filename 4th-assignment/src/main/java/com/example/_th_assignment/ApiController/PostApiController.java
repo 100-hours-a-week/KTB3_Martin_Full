@@ -70,9 +70,9 @@ public class PostApiController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getPost(@PathVariable long id, HttpServletRequest request) {
         sessionManager.access2Resource(request);
-        PostDto post = postService.getPost(id);
+        PostDto post = postService.getPostById(id);
 
-        post.setView(post.getView()+1);
+
 
         long commentsnum = commentService.countByPostId((post.getId()));
         long likesnum = likeService.countByPostId((post.getId()));
@@ -112,8 +112,8 @@ public class PostApiController {
         sessionManager.access2Resource(request);
 
         UserDto user = (UserDto) request.getSession().getAttribute("user");
-        PostDto post = postService.getPost(id);
-        String writerEmail = user.getEmail();
+        PostDto post = postService.getPostById(id);
+        String writerEmail = post.getAuthorEmail();
 
         authorizationManager.checkAuth(request,writerEmail);
 
@@ -128,9 +128,9 @@ public class PostApiController {
     public ResponseEntity<Object> deletePost(@PathVariable long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
-        postService.getPost(id);
+        PostDto post = postService.getPostById(id);
 
-        String writerEmail = user.getEmail();
+        String writerEmail = post.getAuthorEmail();
 
         authorizationManager.checkAuth(request,writerEmail);
 

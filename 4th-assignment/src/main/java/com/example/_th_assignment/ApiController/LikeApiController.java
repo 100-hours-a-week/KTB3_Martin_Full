@@ -7,17 +7,12 @@ import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Service.LikeService;
 import com.example._th_assignment.Service.PostService;
 import com.example._th_assignment.Service.SessionManager;
-import com.example._th_assignment.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +36,6 @@ public class LikeApiController {
             @PathVariable Long postid, @RequestParam(value = "user", required = false) String email,
             HttpServletRequest request) {
         sessionManager.access2Resource(request);
-        postService.getPost(postid);
 
 
         if(email ==null) {

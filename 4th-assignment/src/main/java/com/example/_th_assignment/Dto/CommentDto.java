@@ -3,6 +3,7 @@ package com.example._th_assignment.Dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +31,7 @@ public class CommentDto {
         this.authorEmail = authorEmail;
     }
 
+    @Builder
     public CommentDto(Long id, Long postid, String author, String authorEmail, String content, String birthTime) {
         this.id = id;
         this.postid = postid;

@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class ResponsePostDto {
 
     @JsonView(JsonViewGroup.summaryview.class)
+    private long id;
+
+    @JsonView(JsonViewGroup.summaryview.class)
     private String title;
 
     private String content;
@@ -28,11 +31,11 @@ public class ResponsePostDto {
 
     public ResponsePostDto(PostDto postDto, long comments, long likes) {
 
-
+        this.id = postDto.getId();
         this.title = postDto.getTitle();
         this.content = postDto.getContent();
         this.author = postDto.getAuthor();
-        this.view = postDto.getView();
+        this.view = postDto.getViewcount();
         this.birthtime = postDto.getBirthtime();
         this.comments = comments;
         this.likes = likes;

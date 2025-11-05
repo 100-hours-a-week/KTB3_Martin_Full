@@ -14,15 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +51,7 @@ public class CommentApiController {
     public ResponseEntity<Object> getComments(@Parameter(description = "조회할 게시글 id", required = true, example = "1")
                                                   @PathVariable Long postid, HttpServletRequest request){
         sessionManager.access2Resource(request);
-        postService.getPost(postid);
+        postService.findPostById(postid);
         List<CommentDto> list = commentService.getByPostId(postid);
 
 
@@ -65,7 +62,7 @@ public class CommentApiController {
     public ResponseEntity<Object> getComment(@PathVariable Long postid,
                                                  @PathVariable Long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
-        postService.getPost(postid);
+        postService.findPostById(postid);
         CommentDto comment = commentService.getByPostIdAndCommentId(postid, id);
 //        log.info("get comment for postid={}",postid);
 
@@ -76,7 +73,7 @@ public class CommentApiController {
     public ResponseEntity<Object>  postComment(
             @PathVariable Long postid, @Valid @RequestBody CommentDto comment, HttpServletRequest request){
         sessionManager.access2Auth(request);
-        postService.getPost(postid);
+        postService.findPostById(postid);
         UserDto user = (UserDto) request.getSession().getAttribute("user");
 
 

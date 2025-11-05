@@ -26,7 +26,6 @@ public class UserApiController {
 
     private final UserService userService;
     private final SessionManager sessionManager;
-    private final String Unknown = "unknown";
 
     @Autowired
     public UserApiController (UserService userService, SessionManager sessionManager) {
@@ -94,6 +93,7 @@ public class UserApiController {
             HttpServletRequest request) {
         HttpSession session = sessionManager.access2Auth(request);
         UserDto user = (UserDto) session.getAttribute("user");
+        checkValidNickname(newuser);
 
         user = userService.apply2UserForUpdate(newuser, user);
         user = userService.updateUser(user.getEmail(),user);
@@ -144,7 +144,8 @@ public class UserApiController {
     public void checkValidNickname(RequestUserDto user){
         String nickname = user.getNickname();
         nickname = nickname.replaceAll(" ", "").toLowerCase();
-        if(nickname.equals(Unknown))
+        String unknown = "unknown";
+        if(nickname.equals(unknown))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname cannot be unkown");
     }
 
