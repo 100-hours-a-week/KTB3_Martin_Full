@@ -1,5 +1,6 @@
 package com.example._th_assignment.Dto;
 
+import com.example._th_assignment.Dto.Request.RequestUserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
@@ -21,7 +22,6 @@ public class UserDto {
     public UserDto() {
 
     }
-
 
 
     public UserDto(RequestUserDto registerUser) {

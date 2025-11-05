@@ -1,7 +1,7 @@
 package com.example._th_assignment.ApiController;
 
 import com.example._th_assignment.ApiResponse.ApiResponse;
-import com.example._th_assignment.Dto.RequestUserDto;
+import com.example._th_assignment.Dto.Request.RequestUserDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Dto.ValidationGroup;
 import com.example._th_assignment.Service.SessionManager;
@@ -18,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -27,6 +26,7 @@ public class UserApiController {
 
     private final UserService userService;
     private final SessionManager sessionManager;
+    private final String Unknown = "unknown";
 
     @Autowired
     public UserApiController (UserService userService, SessionManager sessionManager) {
@@ -38,6 +38,7 @@ public class UserApiController {
     public ResponseEntity<Object> login(
             @Validated(ValidationGroup.Login.class) @RequestBody UserDto tryuser,
                                    HttpServletRequest request) {
+
 
         UserDto user = userService.checkUser(tryuser.getEmail(), tryuser.getPassword());
         HttpSession session = request.getSession(false);
@@ -54,7 +55,7 @@ public class UserApiController {
                 .body(ApiResponse.success("login success", user));
     }
 
-    @DeleteMapping("/sesion")
+    @DeleteMapping("/session")
     public ResponseEntity<Object> logout(HttpServletRequest request) {
         HttpSession session = sessionManager.access2Auth(request);
         session.invalidate();
@@ -119,7 +120,7 @@ public class UserApiController {
         session.removeAttribute("user");
         session.setAttribute("user", newuser);
 
-        return ResponseEntity.ok().body(ApiResponse.success("password updated", newuser));
+        return ResponseEntity.ok().body(ApiResponse.success("password updated", user));
 
     }
 
@@ -138,6 +139,13 @@ public class UserApiController {
     public void checkValidPassword(RequestUserDto user){
         if(!user.getPassword().equals(user.getCheckingpassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "password and checkingpassword are not same");
+    }
+
+    public void checkValidNickname(RequestUserDto user){
+        String nickname = user.getNickname();
+        nickname = nickname.replaceAll(" ", "").toLowerCase();
+        if(nickname.equals(Unknown))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname cannot be unkown");
     }
 
 

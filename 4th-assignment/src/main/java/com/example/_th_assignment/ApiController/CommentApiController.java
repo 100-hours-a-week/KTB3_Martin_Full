@@ -57,7 +57,6 @@ public class CommentApiController {
         postService.getPost(postid);
         List<CommentDto> list = commentService.getByPostId(postid);
 
-//        log.info("get all comments for postid={}",postid);
 
         return ResponseEntity.ok(ApiResponse.success("get all comments success", list));
     }

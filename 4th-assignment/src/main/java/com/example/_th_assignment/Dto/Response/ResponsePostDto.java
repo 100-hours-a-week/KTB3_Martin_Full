@@ -1,8 +1,8 @@
-package com.example._th_assignment.Dto;
+package com.example._th_assignment.Dto.Response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example._th_assignment.Dto.JsonViewGroup;
+import com.example._th_assignment.Dto.PostDto;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.validation.constraints.NotBlank;
 
 
 public class ResponsePostDto {
