@@ -77,6 +77,8 @@ public class User {
 
     public void delete(){
         this.nickname = "Unknown";
+        this.email = "Unknown";
+        this.password = "Unknown";
         this.isdeleted=true;
 
     }
