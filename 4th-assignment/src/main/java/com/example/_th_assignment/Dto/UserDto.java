@@ -8,7 +8,7 @@ public class UserDto {
     private String nickname;
 
 
-    @NotBlank(message= "nickname should not empty" ,
+    @NotBlank(message= "email should not empty" ,
             groups = {ValidationGroup.Login.class})
     private String email;
 
