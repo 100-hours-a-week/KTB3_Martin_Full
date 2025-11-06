@@ -36,6 +36,9 @@ public class Comment {
     @Column(nullable = false)
     private boolean isdeleted = false;
 
+    @Version
+    private long version;
+
     public Comment(String content, User user, Post post) {
         this.content = content;
         this.user = user;

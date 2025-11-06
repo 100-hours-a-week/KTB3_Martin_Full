@@ -73,6 +73,7 @@ public class UserApiController {
     public ResponseEntity<Object> register(
             @Validated(ValidationGroup.Register.class) @RequestBody RequestUserDto newuser){
         checkValidPassword(newuser);
+        checkValidNickname(newuser);
         UserDto user = userService.apply2User(newuser);
         user = userService.saveUser(user);
         return ResponseEntity.ok(ApiResponse.success("register success", user));
@@ -146,7 +147,7 @@ public class UserApiController {
         nickname = nickname.replaceAll(" ", "").toLowerCase();
         String unknown = "unknown";
         if(nickname.equals(unknown))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname cannot be unkown");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname cannot be unknown");
     }
 
 

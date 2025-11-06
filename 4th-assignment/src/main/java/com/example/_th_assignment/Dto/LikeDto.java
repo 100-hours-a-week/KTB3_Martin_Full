@@ -8,6 +8,8 @@ public class LikeDto {
     private Long id;
     private Long postid;
     private String authorEmail;
+
+    @JsonIgnore
     private boolean isdeleted = false;
 
 
@@ -26,8 +28,9 @@ public class LikeDto {
     }
 
 
-    public Long getPostid() {
-        return postid;
+
+    public long getPostid(){
+        return this.postid;
     }
     public void setPostid(Long postid) {
         this.postid = postid;
@@ -45,4 +48,11 @@ public class LikeDto {
         this.id = id;
     }
 
+    public boolean getIsdeleted() {
+        return isdeleted;
+    }
+
+    public void setIsdeleted(boolean b) {
+        isdeleted = b;
+    }
 }

@@ -4,11 +4,12 @@ import com.example._th_assignment.Dto.LikeDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DialectOverride;
 
 @Entity
-@Table(name = "post_likes")
+@Table(name = "post_likes",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"postid", "userid"}))
 @Getter
-@Setter
 public class PostLike {
 
     @Id
@@ -21,6 +22,10 @@ public class PostLike {
     @ManyToOne
     @JoinColumn(name = "userid")
     private User user;
+
+    @Column(nullable = false)
+    private boolean isdeleted = false;
+
 
 
 
@@ -41,6 +46,18 @@ public class PostLike {
         String authorEmail = this.user.getEmail();
 
         return new LikeDto(id,postid,authorEmail);
+    }
+
+    public void delete(){
+        this.isdeleted = true;
+    }
+
+    public void refresh(){
+        this.isdeleted = false;
+    }
+
+    public boolean getIsdeleted() {
+        return this.isdeleted;
     }
 
 

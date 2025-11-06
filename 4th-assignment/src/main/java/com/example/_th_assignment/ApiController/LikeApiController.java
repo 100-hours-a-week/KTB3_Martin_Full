@@ -54,23 +54,23 @@ public class LikeApiController {
 
 
 
-        LikeDto like = likeService.apply2Like(new LikeDto(), user);
+        LikeDto like = new LikeDto(postId, user.getEmail());
 
         like = likeService.saveLike(postId, like);
         URI location = URI.create("/likes/" + postId + "?user=" + like.getAuthorEmail());
         return ResponseEntity.created(location).body(ApiResponse.success("save like success", like));
     }
-    @PutMapping("/{postId}")
-    public ResponseEntity<?> updateLike(@PathVariable Long postId, HttpServletRequest request) {
-        sessionManager.access2Resource(request);
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
-
-        LikeDto like = likeService.getbyPostIdAndAuthorEmail(postId, user.getEmail());
-        like = likeService.apply2Like(like, user);
-        like = likeService.updateLike(postId,user.getEmail(), like);
-
-        return ResponseEntity.ok(ApiResponse.success("update like success", like));
-    }
+//    @PutMapping("/{postId}")
+//    public ResponseEntity<?> updateLike(@PathVariable Long postId, HttpServletRequest request) {
+//        sessionManager.access2Resource(request);
+//        UserDto user = (UserDto) request.getSession().getAttribute("user");
+//
+//        LikeDto like = likeService.getbyPostIdAndAuthorEmail(postId, user.getEmail());
+//        like = likeService.apply2Like(like, user, postId);
+//        like = likeService.updateLike(postId,user.getEmail(), like);
+//
+//        return ResponseEntity.ok(ApiResponse.success("update like success", like));
+//    }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<Map<String, Object>> deleteLike(@PathVariable Long postId, HttpServletRequest request) {

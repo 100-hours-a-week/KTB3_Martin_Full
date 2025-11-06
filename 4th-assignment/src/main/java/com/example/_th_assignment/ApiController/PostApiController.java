@@ -127,7 +127,6 @@ public class PostApiController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePost(@PathVariable long id, HttpServletRequest request){
         sessionManager.access2Resource(request);
-        UserDto user = (UserDto) request.getSession().getAttribute("user");
         PostDto post = postService.getPostById(id);
 
         String writerEmail = post.getAuthorEmail();
@@ -135,8 +134,6 @@ public class PostApiController {
         authorizationManager.checkAuth(request,writerEmail);
 
         postService.deletePost(id);
-        commentService.deleteAllComment(id);
-        likeService.deleteAllLike(id);
 
         return ResponseEntity.noContent().build();
 

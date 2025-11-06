@@ -9,6 +9,7 @@ import com.example._th_assignment.Dto.Response.ResponsePostDto;
 import com.example._th_assignment.Entity.Post;
 import com.example._th_assignment.Entity.User;
 import com.example._th_assignment.JpaRepository.PostJpaRepository;
+import com.example._th_assignment.JpaRepository.PostLikeJpaRepository;
 import com.example._th_assignment.JpaRepository.UserJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,34 @@ public class PostService {
 
     private final PostJpaRepository postJpaRepository;
     private final UserJpaRepository userJpaRepository;
+    private final CommentService commentService;
+    private final LikeService likeService;
 
 
     @Autowired
-    public PostService(
-                       PostJpaRepository postJpaRepository,
-                       UserJpaRepository userJpaRepository) {
+    public PostService(PostJpaRepository postJpaRepository,
+                       UserJpaRepository userJpaRepository,
+                       CommentService commentService,
+                       LikeService likeService) {
 
         this.postJpaRepository = postJpaRepository;
         this.userJpaRepository = userJpaRepository;
+        this.commentService = commentService;
+        this.likeService = likeService;
     }
+    public Post findPostById(long id) {
+        return postJpaRepository.findByidAndIsdeletedFalse(id)
+                .orElseThrow(()-> new PostNotFoundException(id));
+    }
+
+
+    @Transactional
+    public PostDto getPostById(long id) {
+        Post post = findPostById(id);
+        post.plusViewCount();
+        return post.toDto();
+    }
+
     @Transactional(readOnly = true)
     public List<PostDto> getAllPosts() {
         List<Post> postList= postJpaRepository.findAllByIsdeletedFalse();
@@ -44,20 +63,6 @@ public class PostService {
         }
 
         return postDtoList;
-    }
-
-
-
-    public Post findPostById(long id) {
-        return postJpaRepository.findByidAndIsdeletedFalse(id)
-                .orElseThrow(()-> new PostNotFoundException(id));
-    }
-
-    @Transactional
-    public PostDto getPostById(long id) {
-        Post post = findPostById(id);
-        post.plusViewCount();
-        return post.toDto();
     }
 
     @Transactional
@@ -72,6 +77,8 @@ public class PostService {
     public void deletePost(long id) {
         Post post = findPostById(id);
         post.delete();
+        commentService.deleteAllComment(id);
+        likeService.deleteAllLike(id);
     }
 
     public PostDto updatePost(Long id, PostDto postDto) {

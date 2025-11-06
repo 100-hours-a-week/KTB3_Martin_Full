@@ -14,14 +14,15 @@ public interface CommentJpaRepository extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c " +
             "join fetch c.post join fetch c.user " +
             "where c.post.id = :postid AND c.id = :id " +
-            "AND c.isdeleted=false AND c.post.isdeleted = false")
+            "AND c.isdeleted=false")
     Optional<Comment> findByPost_IdAndIdAndIsdeletedFalse(@Param("postid")Long postid, @Param("id") long id);
 
     @Query("select c from Comment c " +
             "join fetch c.post join fetch c.user " +
             "where c.post.id = :postid " +
             "AND c.isdeleted=false AND c.post.isdeleted = false")
-    List<Comment> findAllByPost_IdAndIsdeletedFalse(@Param("postid")Long postid);
+    List<Comment> findAllWithPost_IdAndIsdeletedFalse(@Param("postid")Long postid);
+    List<Comment> findAllByPost_IdAndIsdeletedFalse(long postid);
     Long countByPost_IdAndIsdeletedFalse(Long postid);
     Optional<Comment> findByIdAndIsdeletedFalse(Long id);
 

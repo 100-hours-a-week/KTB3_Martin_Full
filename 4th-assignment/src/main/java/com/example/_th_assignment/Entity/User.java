@@ -33,6 +33,9 @@ public class User {
 
     private Boolean isdeleted=false;
 
+    @Version
+    private long version;
+
     public User() {
     }
 

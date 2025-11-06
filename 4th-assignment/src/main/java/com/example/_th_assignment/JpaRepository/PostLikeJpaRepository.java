@@ -14,17 +14,22 @@ public interface PostLikeJpaRepository extends JpaRepository<PostLike, Long> {
 
     @Query("select pl from PostLike pl " +
             "join fetch pl.post join fetch pl.user " +
-            "where pl.post.id =:postId and pl.post.isdeleted = false")
-    List<PostLike> findAllByPost_Id(long postId);
+            "where pl.post.id =:postId " +
+            "and pl.isdeleted= false")
+    List<PostLike> findAllWithPost_IdAndIsdeletedFalse(long postId);
+    List<PostLike> findAllByPost_IdAndIsdeletedFalse(long postId);
 
     @Query("select pl from PostLike pl " +
             "join fetch pl.post join fetch pl.user " +
             "where pl.post.id = :postId and pl.user.email = :email " +
-            "and pl.post.isdeleted =false")
-    Optional<PostLike> findByPost_IdAndUser_Email(@Param("postId")long postId, @Param("email")String email);
+            "and pl.post.isdeleted =false and pl.isdeleted =false")
+    Optional<PostLike> findByPost_IdAndUser_EmailAndIsdeletedFalse
+            (@Param("postId")long postId, @Param("email")String email);
 
     Boolean existsByPost_IdAndUser_Email(Long postId, String email);
+    Boolean existsByIdAndIsdeletedFalse(long id);
 
-    long countAllByPost_Id(long postId);
+    long countAllByPost_IdAndIsdeletedFalse(long postId);
 
+    Optional<PostLike> findByPost_IdAndUser_Email(Long postid, String email);
 }

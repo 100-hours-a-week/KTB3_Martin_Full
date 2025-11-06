@@ -13,10 +13,8 @@ import com.example._th_assignment.JpaRepository.PostJpaRepository;
 import com.example._th_assignment.JpaRepository.UserJpaRepository;
 import com.example._th_assignment.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,23 +39,6 @@ public class CommentService {
         this.postJpaRepository = postJpaRepository;
         this.commentJpaRepository = commentJpaRepository;
     }
-    @Transactional(readOnly = true)
-    public List<CommentDto> getByPostId(Long postId) {
-        List<Comment> commentList = commentJpaRepository.findAllByPost_IdAndIsdeletedFalse(postId);
-        List<CommentDto> commentDtoList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            CommentDto commentDto = comment.toDto();
-            commentDtoList.add(commentDto);
-        }
-        return commentDtoList;
-    }
-    @Transactional(readOnly = true)
-    public CommentDto getByPostIdAndCommentId(Long postId, Long commentId) {
-        Comment comment = findByPostIdAndId(postId, commentId);
-
-        return comment.toDto();
-    }
-
     public Comment findByPostIdAndId(Long postId, Long commentId) {
         Comment comment = commentJpaRepository.findByPost_IdAndIdAndIsdeletedFalse(postId, commentId)
                 .orElseThrow(() -> new CommentNotFoundException(postId, commentId));
@@ -65,6 +46,23 @@ public class CommentService {
 
     }
     @Transactional(readOnly = true)
+    public List<CommentDto> getByPostId(Long postId) {
+        List<Comment> commentList = commentJpaRepository.findAllWithPost_IdAndIsdeletedFalse(postId);
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for (Comment comment : commentList) {
+            CommentDto commentDto = comment.toDto();
+            commentDtoList.add(commentDto);
+        }
+        return commentDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public CommentDto getByPostIdAndCommentId(Long postId, Long commentId) {
+        Comment comment = findByPostIdAndId(postId, commentId);
+
+        return comment.toDto();
+    }
+    @Transactional
     public CommentDto saveComment(Long postId, CommentDto commentDto) {
         String email = commentDto.getAuthorEmail();
 
@@ -73,9 +71,9 @@ public class CommentService {
         Post post = postJpaRepository.findByidAndIsdeletedFalse(postId)
                 .orElseThrow(()-> new PostNotFoundException(postId));
         Comment comment = Comment.from(commentDto, user, post);
-        commentJpaRepository.save(comment);
+        comment = commentJpaRepository.save(comment);
 
-        return commentDto;
+        return comment.toDto();
     }
 
     @Transactional
@@ -98,8 +96,10 @@ public class CommentService {
     @Transactional
     public void deleteAllComment(Long postId) {
         List<Comment> commentList = commentJpaRepository.findAllByPost_IdAndIsdeletedFalse(postId);
+
         for (Comment comment : commentList) {
             comment.delete();
+            System.out.println(comment.getId() +"-" + comment.isIsdeleted());
         }
     }
 

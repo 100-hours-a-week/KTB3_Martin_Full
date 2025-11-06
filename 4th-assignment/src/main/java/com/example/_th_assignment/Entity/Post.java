@@ -40,7 +40,7 @@ public class Post {
     private boolean isdeleted = false;
 
     @Version
-    long version;
+    private long version;
 
     public Post() {}
 
