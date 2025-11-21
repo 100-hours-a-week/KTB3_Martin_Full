@@ -1,11 +1,14 @@
-package com.example._th_assignment.Dto;
+package com.example._th_assignment.Dto.Response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example._th_assignment.Dto.JsonViewGroup;
+import com.example._th_assignment.Dto.PostDto;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.validation.constraints.NotBlank;
 
 
 public class ResponsePostDto {
+
+    @JsonView(JsonViewGroup.summaryview.class)
+    private long id;
 
     @JsonView(JsonViewGroup.summaryview.class)
     private String title;
@@ -28,11 +31,11 @@ public class ResponsePostDto {
 
     public ResponsePostDto(PostDto postDto, long comments, long likes) {
 
-
+        this.id = postDto.getId();
         this.title = postDto.getTitle();
         this.content = postDto.getContent();
         this.author = postDto.getAuthor();
-        this.view = postDto.getView();
+        this.view = postDto.getViewcount();
         this.birthtime = postDto.getBirthtime();
         this.comments = comments;
         this.likes = likes;
