@@ -17,7 +17,7 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private String image = "";
+    private String imageurl = "";
 
     public UserDto() {
 
@@ -29,17 +29,17 @@ public class UserDto {
         this.email = registerUser.getEmail();
         this.password = registerUser.getPassword();
         if(registerUser.getImage()!=null) {
-            this.image = registerUser.getImage();
+            this.imageurl = registerUser.getImage();
         }
     }
 
 
-    public UserDto( String nickname, String email, String password, String image) {
+    public UserDto( String nickname, String email, String password, String imageurl) {
 
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.image = image;
+        this.imageurl = imageurl;
     }
 
     public String getNickname() {
@@ -60,11 +60,11 @@ public class UserDto {
         return email;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageurl() {
+        return imageurl;
     }
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
 

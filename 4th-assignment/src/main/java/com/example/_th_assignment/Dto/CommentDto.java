@@ -19,6 +19,7 @@ public class CommentDto {
     @NotBlank(message = "comment content should not empty")
     private String content;
     private String birthTime;
+    private String userimage;
 
     @JsonIgnore
     private Boolean isdeleted = false;

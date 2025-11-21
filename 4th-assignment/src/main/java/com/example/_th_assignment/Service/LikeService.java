@@ -11,7 +11,7 @@ import com.example._th_assignment.Entity.User;
 import com.example._th_assignment.JpaRepository.PostJpaRepository;
 import com.example._th_assignment.JpaRepository.PostLikeJpaRepository;
 import com.example._th_assignment.JpaRepository.UserJpaRepository;
-import com.example._th_assignment.Repository.LikeRepository;
+import com.example._th_assignment.etc.Repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +22,15 @@ import java.util.Optional;
 
 @Service
 public class LikeService {
-    private final LikeRepository likeRepository;
+
     private final UserJpaRepository userJpaRepository;
     private final PostJpaRepository postJpaRepository;
     private final PostLikeJpaRepository postLikeJpaRepository;
 
     @Autowired
-    public LikeService(LikeRepository likeRepository,
-                       UserJpaRepository userJpaRepository,
-                       PostJpaRepository postRepository, PostLikeJpaRepository postLikeJpaRepository) {
-        this.likeRepository = likeRepository;
+    public LikeService(UserJpaRepository userJpaRepository,
+                       PostJpaRepository postRepository,
+                       PostLikeJpaRepository postLikeJpaRepository) {
         this.userJpaRepository = userJpaRepository;
         this.postJpaRepository = postRepository;
         this.postLikeJpaRepository = postLikeJpaRepository;
@@ -111,11 +110,10 @@ public class LikeService {
         return postLikeJpaRepository.countAllByPost_IdAndIsdeletedFalse(postid);
     }
 
-//    public LikeDto apply2Like(LikeDto reqeustLike, UserDto user, long postId){
-//        long id = reqeustLike.getId();
-//        String authorEmail = user.getEmail();
-//        return new LikeDto(id,postId, authorEmail);
-//    }
+
+    public boolean existlike(long postid, String authorEmail){
+        return postLikeJpaRepository.existsByPost_IdAndUser_Email(postid, authorEmail);
+    }
 
 
 

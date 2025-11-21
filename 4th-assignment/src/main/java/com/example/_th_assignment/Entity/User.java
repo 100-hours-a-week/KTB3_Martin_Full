@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "app_users")
@@ -17,7 +18,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String nickname;
     @Column(unique = true, nullable = false)
     private String email;
@@ -53,7 +54,7 @@ public class User {
         String nickname = userDto.getNickname();
         String email = userDto.getEmail();
         String password = userDto.getPassword();
-        String image = userDto.getImage();
+        String image = userDto.getImageurl();
         return new User(nickname, email, password, image);
     }
 
@@ -68,7 +69,7 @@ public class User {
     public void updateUser(UserDto userDto){
         this.nickname = userDto.getNickname();
         this.email = userDto.getEmail();
-        this.image_path = userDto.getImage();
+        this.image_path = userDto.getImageurl();
     }
 
     public void changePwd(String newpassword){
@@ -77,8 +78,7 @@ public class User {
 
     public void delete(){
         this.nickname = "Unknown";
-        this.email = "Unknown";
-        this.password = "Unknown";
+        this.email = "deleted_"+ UUID.randomUUID()+"@example.com";
         this.isdeleted=true;
 
     }

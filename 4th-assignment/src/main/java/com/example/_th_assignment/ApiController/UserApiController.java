@@ -4,6 +4,7 @@ import com.example._th_assignment.ApiResponse.ApiResponse;
 import com.example._th_assignment.Dto.Request.RequestUserDto;
 import com.example._th_assignment.Dto.UserDto;
 import com.example._th_assignment.Dto.ValidationGroup;
+import com.example._th_assignment.Service.FileStorageService;
 import com.example._th_assignment.Service.SessionManager;
 import com.example._th_assignment.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
@@ -26,11 +28,15 @@ public class UserApiController {
 
     private final UserService userService;
     private final SessionManager sessionManager;
+    private final FileStorageService fileStorageService;
 
     @Autowired
-    public UserApiController (UserService userService, SessionManager sessionManager) {
+    public UserApiController (UserService userService,
+                              SessionManager sessionManager,
+                              FileStorageService fileStorageService) {
         this.userService = userService;
         this.sessionManager = sessionManager;
+        this.fileStorageService = fileStorageService;
 
     }
     @PostMapping("/session")
@@ -149,6 +155,32 @@ public class UserApiController {
         if(nickname.equals(unknown))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nickname cannot be unknown");
     }
+
+    @GetMapping("/email-conflict")
+    public ResponseEntity<?> existEmail(@RequestParam(value = "email") String email) {
+        boolean exists = userService.existemail(email);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/nickname-conflict")
+    public ResponseEntity<?> existNickname(@RequestParam(value = "nickname") String name) {
+        boolean exists = userService.existnickname(name);
+        return ResponseEntity.ok(exists);
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<?> uploadProfile(@RequestParam("image") MultipartFile image) {
+
+        if (image.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "empty file"));
+        }
+
+
+        String url = fileStorageService.saveImage(image);
+
+        return ResponseEntity.ok(Map.of("url", url));
+    }
+
 
 
 }

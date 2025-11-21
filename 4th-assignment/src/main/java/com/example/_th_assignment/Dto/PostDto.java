@@ -26,6 +26,9 @@ public class PostDto {
 
     private String image = "";
 
+    private String userimage = "";
+
+
     @JsonIgnore
     private Boolean isdeleted = false;
 
@@ -114,6 +117,13 @@ public class PostDto {
     }
     public void setAuthorEmail(String authorEmail) {
         this.authorEmail = authorEmail;
+    }
+
+    public String getUserimage() {
+        return userimage;
+    }
+    public void setUserimage(String userimage) {
+        this.userimage = userimage;
     }
 
 

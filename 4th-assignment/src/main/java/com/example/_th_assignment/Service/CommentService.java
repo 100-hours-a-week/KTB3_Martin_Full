@@ -11,7 +11,7 @@ import com.example._th_assignment.Entity.User;
 import com.example._th_assignment.JpaRepository.CommentJpaRepository;
 import com.example._th_assignment.JpaRepository.PostJpaRepository;
 import com.example._th_assignment.JpaRepository.UserJpaRepository;
-import com.example._th_assignment.Repository.CommentRepository;
+import com.example._th_assignment.etc.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

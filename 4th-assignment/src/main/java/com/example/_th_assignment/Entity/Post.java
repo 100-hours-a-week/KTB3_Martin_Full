@@ -68,7 +68,7 @@ public class Post {
         long viewcount = this.viewcount;
         String birthtime = this.createdat.format(DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss"));;
 
-        return PostDto.builder()
+        PostDto postdto = PostDto.builder()
                 .id(id)
                 .authorEmail(authorEmail)
                 .author(author)
@@ -78,6 +78,10 @@ public class Post {
                 .viewcount(viewcount)
                 .birthtime(birthtime)
                 .build();
+
+        postdto.setUserimage(user.getImage_path());
+
+        return postdto;
 
 
 

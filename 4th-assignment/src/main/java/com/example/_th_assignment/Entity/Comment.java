@@ -59,7 +59,7 @@ public class Comment {
         String authorEmail = this.user.getEmail();
         String content = this.content;
         String birthtime = this.createdat.format(DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss"));;
-        return CommentDto.builder()
+        CommentDto comment =  CommentDto.builder()
                 .id(id)
                 .postid(postid)
                 .author(author)
@@ -67,6 +67,10 @@ public class Comment {
                 .content(content)
                 .birthTime(birthtime)
                 .build();
+
+        comment.setUserimage(user.getImage_path());
+
+        return comment;
 
 
     }
