@@ -27,6 +27,8 @@ public class ResponsePostDto {
     @JsonView(JsonViewGroup.summaryview.class)
     private long likes;
 
+    private String image;
+
     @JsonView(JsonViewGroup.summaryview.class)
     private String userimage;
 
@@ -43,6 +45,7 @@ public class ResponsePostDto {
         this.comments = comments;
         this.likes = likes;
         this.userimage = postDto.getUserimage();
+        this.image = postDto.getImage();
     }
 
     public String getTitle(){
@@ -69,6 +72,12 @@ public class ResponsePostDto {
     }
     public long getLikes(){
         return likes;
+    }
+    public String getImage(){
+        return image;
+    }
+    public String getUserimage(){
+        return userimage;
     }
 
 

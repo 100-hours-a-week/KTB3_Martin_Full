@@ -26,7 +26,7 @@ public interface PostLikeJpaRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByPost_IdAndUser_EmailAndIsdeletedFalse
             (@Param("postId")long postId, @Param("email")String email);
 
-    Boolean existsByPost_IdAndUser_Email(Long postId, String email);
+    Boolean existsByPost_IdAndUser_EmailAndIsdeletedFalse(Long postId, String email);
     Boolean existsByIdAndIsdeletedFalse(long id);
 
     long countAllByPost_IdAndIsdeletedFalse(long postId);

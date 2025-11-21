@@ -112,7 +112,7 @@ public class LikeService {
 
 
     public boolean existlike(long postid, String authorEmail){
-        return postLikeJpaRepository.existsByPost_IdAndUser_Email(postid, authorEmail);
+        return postLikeJpaRepository.existsByPost_IdAndUser_EmailAndIsdeletedFalse(postid, authorEmail);
     }
 
 

@@ -80,7 +80,7 @@ public class PostService {
         commentService.deleteAllComment(id);
         likeService.deleteAllLike(id);
     }
-
+    @Transactional
     public PostDto updatePost(Long id, PostDto postDto) {
         Post post = findPostById(id);
         post.updatePost(postDto);

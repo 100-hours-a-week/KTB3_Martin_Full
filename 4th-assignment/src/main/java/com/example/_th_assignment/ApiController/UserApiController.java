@@ -125,7 +125,7 @@ public class UserApiController {
         user = userService.apply2UserForPassword(newuser, user);
         user = userService.updateUserPassword(user.getEmail(),user);
         session.removeAttribute("user");
-        session.setAttribute("user", newuser);
+        session.setAttribute("user", user);
 
         return ResponseEntity.ok().body(ApiResponse.success("password updated", user));
 
